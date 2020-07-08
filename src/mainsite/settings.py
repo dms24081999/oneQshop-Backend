@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'storages',
+
     'users_app',
     'products_app',
-    
 ]
 
 MIDDLEWARE = [
@@ -125,9 +126,33 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
+AWS_ACCESS_KEY_ID = 'AKIAX5GVYLUQZR4HIMXD'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'oneqshop-v1'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
 
+AWS_DEFAULT_ACL = None
+AWS_S3_FILE_OVERWRITE =True
+AWS_STATIC_LOCATION = 'static'
+STATICFILES_STORAGE = 'mainsite.storage_backends.StaticStorage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+
+AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
+DEFAULT_FILE_STORAGE = 'mainsite.storage_backends.PublicMediaStorage'
+
+AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
+PRIVATE_FILE_STORAGE = 'mainsite.storage_backends.PrivateMediaStorage'
+# ?AWSAccessKeyId=AKIAX5GVYLUQZR4HIMXD after url
+
+# REST API
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
