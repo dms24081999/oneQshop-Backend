@@ -14,7 +14,8 @@ class UsersSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
-            "current_user"
+            "current_user",
+            "picture"
         ]    
 
     def curruser(self, obj):

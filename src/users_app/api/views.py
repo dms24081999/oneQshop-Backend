@@ -10,12 +10,13 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 Users=get_user_model() 
 
-class FullInfoListViewUsersAPIView(ModelViewSet):
+class FullInfoUsersAPIView(ModelViewSet):
     lookup_field = "pk"
     serializer_class = UsersSerializer
     permission_classes = [AllowAny]
     queryset = Users.objects.all()
 
+    # List GET
     def get_queryset(self, *args, **kwargs):
         context = super(FullInfoListViewUsersAPIView, self).get_queryset(
             *args, **kwargs
@@ -30,6 +31,7 @@ class FullInfoListViewUsersAPIView(ModelViewSet):
             ).distinct()
         return qs
 
+    # GET
     def retrieve(self, request, pk, *args, **kwargs):
         print("current pk", pk, request.user.pk)
         if not request.user.is_authenticated:
@@ -41,6 +43,7 @@ class FullInfoListViewUsersAPIView(ModelViewSet):
             serializer = self.get_serializer(instance)
             return Response(serializer.data)
 
+    # PUT
     def update(self, request, pk, *args, **kwargs):
         if not request.user.is_authenticated:
             return Response({"detail": "Auth not provided."}, status=400)
@@ -53,9 +56,15 @@ class FullInfoListViewUsersAPIView(ModelViewSet):
                 instance, data=request.data, partial=partial
             )
             serializer.is_valid(raise_exception=True)
-            self.perform_update(serializer)
+            self.perform_update(serializer, partial=True)
             return Response(serializer.data)
+    
+    # PATCH
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
 
+    # DELETE
     def destroy(self, request, pk, *args, **kwargs):
         if not request.user.is_authenticated:
             return Response({"detail": "Auth not provided."}, status=400)

@@ -19,7 +19,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 
 # For listing all users and creating new user, to view a single user append '/1' that is '/id' in the URL  path 'list/fullinfo'
-router.register(r"list/fullinfo", FullInfoListViewUsersAPIView)
+router.register(r"list/fullinfo", FullInfoUsersAPIView) 
 
 urlpatterns = [
     path('login/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
