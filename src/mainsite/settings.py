@@ -187,3 +187,11 @@ else:
     MEDIA_URL = '/mediafiles/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+# email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')  # mail service smtp
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')  # email id
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # password
+EMAIL_PORT = config('EMAIL_PORT',cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS',cast=bool)
