@@ -34,7 +34,7 @@ class Users(AbstractBaseUser):
         blank=False
     )
     if not settings.AWS:
-        picture = models.FileField(storage=FileSystemStorage(),upload_to='public/profile_picture/',db_column="picture",null=True,blank=True)
+        picture = models.FileField(storage=FileSystemStorage(),upload_to=settings.AWS_PUBLIC_MEDIA_LOCATION+'/profile_picture/',db_column="picture",null=True,blank=True)
     else:
         picture = models.FileField(storage=ProfilePrictureStorage(),db_column="picture",null=True,blank=True)
     active = models.BooleanField(default=True,db_column="active")

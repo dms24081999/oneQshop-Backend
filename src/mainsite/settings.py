@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from decouple import config,Csv
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+i62lal(mmx@ip=*v*2@5q_sdd7!l8bc**d7*9y@0%4mn2k^pt'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 AUTH_USER_MODEL = 'users_app.Users'
 
@@ -135,14 +137,13 @@ REST_FRAMEWORK = {
     ]
 }
 
-from datetime import timedelta
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -156,21 +157,20 @@ STATICFILES_DIRS = [
 ]
 
 # aws settings
-AWS=False
+AWS= config('AWS', cast=bool)
 AWS_STATIC_LOCATION = 'static'
 AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
 AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
 AWS_DEFAULT_ACL = 'private'
 
-
 if AWS:
     # aws settings
-    AWS_ACCESS_KEY_ID = 'AKIAX5GVYLUQZR4HIMXD'
-    AWS_SECRET_ACCESS_KEY = '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'
-    AWS_STORAGE_BUCKET_NAME = 'oneqshop-v1'
-    AWS_S3_REGION_NAME = 'ap-south-1'
-    AWS_DEFAULT_ACL = 'private'
-    AWS_S3_FILE_OVERWRITE =True
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
+    AWS_DEFAULT_ACL = config('AWS_DEFAULT_ACL')
+    AWS_S3_FILE_OVERWRITE = config('AWS_S3_FILE_OVERWRITE', cast=bool)
     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME) # oneqshop-v1.s3.ap-south-1.amazonaws.com
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     # s3 static settings
@@ -179,7 +179,7 @@ if AWS:
     # s3 public media settings
     DEFAULT_FILE_STORAGE = 'mainsite.storage_backends.PublicMediaStorage'
     # s3 private media settings
-    AWS_S3_SIGNATURE_VERSION = 's3v4'
+    AWS_S3_SIGNATURE_VERSION = config('AWS_S3_SIGNATURE_VERSION')
     PRIVATE_FILE_STORAGE = 'mainsite.storage_backends.PrivateMediaStorage' # ?AWSAccessKeyId=AKIAX5GVYLUQZR4HIMXD after url
 else:
     STATIC_URL = '/staticfiles/'
