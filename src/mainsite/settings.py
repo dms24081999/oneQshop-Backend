@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'users_app',
+    'shops_app',
     'products_app',
 ]
 
@@ -131,7 +132,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'mainsite.auth_backend.MyBackend',
+        'mainsite.backend.MyBackend',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',

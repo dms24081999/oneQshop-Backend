@@ -23,3 +23,8 @@ class ProfilePrictureStorage(S3Boto3Storage):
     location = settings.AWS_PUBLIC_MEDIA_LOCATION + '/profile_picture'
     default_acl = 'public-read'
     file_overwrite = False
+
+class ProductMainPrictureStorage(S3Boto3Storage):
+    location = settings.AWS_PUBLIC_MEDIA_LOCATION + '/products/main'
+    default_acl = 'public-read'
+    file_overwrite = True

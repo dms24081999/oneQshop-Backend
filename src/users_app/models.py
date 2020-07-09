@@ -26,7 +26,7 @@ class Users(AbstractBaseUser):
         null=False,
         blank=False
     )
-    username= models.TextField(
+    username= models.CharField(
         db_column="username",
         max_length=255,
         unique=True,
@@ -47,6 +47,11 @@ class Users(AbstractBaseUser):
     REQUIRED_FIELDS = ['email'] # username & Password are required by default.
 
     objects = UserManager()
+
+    class Meta:
+        verbose_name = "User"
+        verbose_name_plural = "Users"
+        db_table = "users"
 
     def get_full_name(self):
         # The user is identified by their email address
@@ -84,7 +89,14 @@ class Users(AbstractBaseUser):
         "Is the user active?"
         return self.active
 
+class Addresses(models.Model):
+    address = models.TextField(max_length=500)
+    city_name = models.CharField(max_length=200, blank=True,null=True)
+    pincode = models.CharField(max_length=10, blank=True,null=True)
+    state_name = models.CharField(max_length=165, blank=True,null=True)
+    country_name = models.CharField(max_length=40, unique=True, blank=True)
+
     class Meta:
-        verbose_name = "User"
-        verbose_name_plural = "Users"
-        db_table = "users"
+        verbose_name = "Address"
+        verbose_name_plural = "Addresses"
+        db_table = "addresses"

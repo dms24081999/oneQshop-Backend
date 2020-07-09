@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 Users=get_user_model() 
 
-class FullInfoUsersAPIView(ModelViewSet):
+class UsersFullInfoAPIView(ModelViewSet):
     lookup_field = "pk"
     serializer_class = UsersSerializer
     permission_classes = [AllowAny]
@@ -18,7 +18,7 @@ class FullInfoUsersAPIView(ModelViewSet):
 
     # List GET
     def get_queryset(self, *args, **kwargs):
-        context = super(FullInfoListViewUsersAPIView, self).get_queryset(
+        context = super(UsersFullInfoAPIView, self).get_queryset(
             *args, **kwargs
         )
         qs = self.queryset
@@ -56,13 +56,23 @@ class FullInfoUsersAPIView(ModelViewSet):
                 instance, data=request.data, partial=partial
             )
             serializer.is_valid(raise_exception=True)
-            self.perform_update(serializer, partial=True)
+            self.perform_update(serializer)
             return Response(serializer.data)
     
     # PATCH
-    def partial_update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        return self.update(request, *args, **kwargs)
+    def partial_update(self, request,pk, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Auth not provided."}, status=400)
+        elif int(pk) != int(request.user.pk):
+            return Response({"detail": "Not found."}, status=400)
+        else:
+            instance = self.get_object()
+            serializer = self.get_serializer(
+                    instance, data=request.data, partial=True
+            )
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response(serializer.data)
 
     # DELETE
     def destroy(self, request, pk, *args, **kwargs):

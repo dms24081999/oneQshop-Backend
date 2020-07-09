@@ -13,17 +13,37 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+
 from django.contrib import admin
 from django.urls import path,include
 from django.conf.urls.static import static
 from django.conf import settings
+from rest_framework_simplejwt import views as jwt_views
+from .authentication import MyTokenObtainPairView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/login/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/login/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/login/token/custom/', MyTokenObtainPairView.as_view()),
     # path('user/', include('users_app.urls')),
-    path('api/user/', include('users_app.api.urls')),
+    path('api/users/', include('users_app.api.urls')),
+    path('api/products/', include('products_app.api.urls')),
 ]
 
 if not settings.AWS:
     urlpatterns=urlpatterns+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
+
+"""
+pyjwt decode --no-verify <TOKEN>
+import jwt
+jwt.decode('<TOKEN>', verify=False)
+
+jwt.encode(<PAYLOAD>, '<SECRET_KEY>', algorithm=['HS256']) => <TOKEN>
+jwt.decode('<TOKEN>','<SECRET_KEY>',algorithms=['HS256']) => <PAYLOAD>
+
+import time
+int(time.time())
+"""
