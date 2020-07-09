@@ -8,13 +8,13 @@ from rest_framework import status
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-User=get_user_model() 
+Users=get_user_model() 
 
 class FullInfoListViewUsersAPIView(ModelViewSet):
     lookup_field = "pk"
-    serializer_class = UserSerializer
+    serializer_class = UsersSerializer
     permission_classes = [AllowAny]
-    queryset = User.objects.all()
+    queryset = Users.objects.all()
 
     def get_queryset(self, *args, **kwargs):
         context = super(FullInfoListViewUsersAPIView, self).get_queryset(

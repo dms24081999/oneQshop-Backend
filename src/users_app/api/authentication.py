@@ -6,7 +6,7 @@ from django.conf import settings
 from rest_framework.authentication import get_authorization_header, BaseAuthentication
 
 from django.contrib.auth import get_user_model
-User=get_user_model() 
+Users=get_user_model() 
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView

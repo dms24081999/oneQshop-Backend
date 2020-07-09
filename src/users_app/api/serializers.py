@@ -1,13 +1,13 @@
 from rest_framework import serializers
 
 from django.contrib.auth import get_user_model
-User=get_user_model()
+Users=get_user_model()
 
-class UserSerializer(serializers.ModelSerializer):
+class UsersSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     current_user = serializers.SerializerMethodField("curruser")
     class Meta:
-        model = User
+        model = Users
         fields = [
             "id",
             "username",

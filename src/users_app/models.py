@@ -1,14 +1,17 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser
 )
 from .managers import (
     UserManager
 )
+from mainsite.storage_backends import ProfilePrictureStorage
+from django.core.files.storage import FileSystemStorage
 
 
 # Create your models here.
-class User(AbstractBaseUser):
+class Users(AbstractBaseUser):
     first_name = models.CharField(
         db_column="first_name", max_length=255, blank=True, null=False
     )
@@ -30,6 +33,10 @@ class User(AbstractBaseUser):
         null=False,
         blank=False
     )
+    if not settings.AWS:
+        picture = models.FileField(storage=FileSystemStorage(),upload_to='public/profile_picture/',db_column="picture",null=True,blank=True)
+    else:
+        picture = models.FileField(storage=ProfilePrictureStorage(),db_column="picture",null=True,blank=True)
     active = models.BooleanField(default=True,db_column="active")
     staff = models.BooleanField(default=False,db_column="staff") # a admin user; non super-user
     admin = models.BooleanField(default=False,db_column="admin") # a superuser
@@ -76,3 +83,8 @@ class User(AbstractBaseUser):
     def is_active(self):
         "Is the user active?"
         return self.active
+
+    class Meta:
+        verbose_name = "User"
+        verbose_name_plural = "Users"
+        db_table = "users"

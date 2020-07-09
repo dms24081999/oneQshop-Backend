@@ -5,7 +5,7 @@ from django.contrib import admin
 
 from .forms import *
 from django.contrib.auth import get_user_model
-User=get_user_model() 
+Users=get_user_model() 
    
-admin.site.register(User)
+admin.site.register(Users)
  
