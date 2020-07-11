@@ -4,6 +4,7 @@ from ..models import Shops
 
 class ShopsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Shops
         fields = [
@@ -14,4 +15,4 @@ class ShopsSerializer(serializers.ModelSerializer):
             "pincode",
             "state_name",
             "country_name",
-        ]  
+        ]

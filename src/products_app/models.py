@@ -15,7 +15,9 @@ class Categories(models.Model):
     short_name = models.SlugField(
         db_column="short_name", max_length=255, null=False, blank=False
     )
-    description = models.CharField(db_column="description", max_length=255,null=False, blank=False)
+    description = models.CharField(
+        db_column="description", max_length=255, null=False, blank=False
+    )
 
     class Meta:
         verbose_name = "Category"

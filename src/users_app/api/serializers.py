@@ -1,11 +1,14 @@
 from rest_framework import serializers
 
 from django.contrib.auth import get_user_model
-Users=get_user_model()
+
+Users = get_user_model()
+
 
 class UsersSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     current_user = serializers.SerializerMethodField("curruser")
+
     class Meta:
         model = Users
         fields = [
@@ -15,8 +18,8 @@ class UsersSerializer(serializers.ModelSerializer):
             "last_name",
             "email",
             "current_user",
-            "picture"
-        ]    
+            "picture",
+        ]
 
     def curruser(self, obj):
         try:
@@ -24,4 +27,3 @@ class UsersSerializer(serializers.ModelSerializer):
             return self.context["request"].user.id
         except:
             pass
-

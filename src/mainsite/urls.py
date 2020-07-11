@@ -16,26 +16,36 @@ Including another URLconf
 
 
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework_simplejwt import views as jwt_views
 from .authentication import MyTokenObtainPairView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/login/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/login/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/login/token/custom/', MyTokenObtainPairView.as_view()),
+    path("admin/", admin.site.urls),
+    path(
+        "api/login/token/",
+        jwt_views.TokenObtainPairView.as_view(),
+        name="token_obtain_pair",
+    ),
+    path(
+        "api/login/token/refresh/",
+        jwt_views.TokenRefreshView.as_view(),
+        name="token_refresh",
+    ),
+    path("api/login/token/custom/", MyTokenObtainPairView.as_view()),
     # path('user/', include('users_app.urls')),
-    path('api/users/', include('users_app.api.urls')),
-    path('api/shops/', include('shops_app.api.urls')),
-    path('api/products/', include('products_app.api.urls')),
+    path("api/users/", include("users_app.api.urls")),
+    path("api/shops/", include("shops_app.api.urls")),
+    path("api/products/", include("products_app.api.urls")),
 ]
 
 if not settings.AWS:
-    urlpatterns=urlpatterns+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
+    urlpatterns = urlpatterns + static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )
+
 
 """
 pyjwt decode --no-verify <TOKEN>

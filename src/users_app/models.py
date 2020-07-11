@@ -1,11 +1,7 @@
 from django.db import models
 from django.conf import settings
-from django.contrib.auth.models import (
-    AbstractBaseUser
-)
-from .managers import (
-    UserManager
-)
+from django.contrib.auth.models import AbstractBaseUser
+from .managers import UserManager
 from mainsite.storage_backends import ProfilePrictureStorage
 from django.core.files.storage import FileSystemStorage
 
@@ -20,31 +16,39 @@ class Users(AbstractBaseUser):
     )
     email = models.EmailField(
         db_column="email",
-        verbose_name='email address',
+        verbose_name="email address",
         max_length=255,
         unique=True,
         null=False,
-        blank=False
+        blank=False,
     )
-    username= models.CharField(
-        db_column="username",
-        max_length=255,
-        unique=True,
-        null=False,
-        blank=False
+    username = models.CharField(
+        db_column="username", max_length=255, unique=True, null=False, blank=False
     )
     if not settings.AWS:
-        picture = models.FileField(storage=FileSystemStorage(),upload_to=settings.AWS_PUBLIC_MEDIA_LOCATION+'/profile_picture/',db_column="picture",null=True,blank=True)
+        picture = models.FileField(
+            storage=FileSystemStorage(),
+            upload_to=settings.AWS_PUBLIC_MEDIA_LOCATION + "/profile_picture/",
+            db_column="picture",
+            null=True,
+            blank=True,
+        )
     else:
-        picture = models.FileField(storage=ProfilePrictureStorage(),db_column="picture",null=True,blank=True)
-    active = models.BooleanField(default=True,db_column="active")
-    staff = models.BooleanField(default=False,db_column="staff") # a admin user; non super-user
-    admin = models.BooleanField(default=False,db_column="admin") # a superuser
-    all_logout = models.CharField(max_length=20,default='',null=True,blank=True,db_column="all_logout")
+        picture = models.FileField(
+            storage=ProfilePrictureStorage(), db_column="picture", null=True, blank=True
+        )
+    active = models.BooleanField(default=True, db_column="active")
+    staff = models.BooleanField(
+        default=False, db_column="staff"
+    )  # a admin user; non super-user
+    admin = models.BooleanField(default=False, db_column="admin")  # a superuser
+    all_logout = models.CharField(
+        max_length=20, default="", null=True, blank=True, db_column="all_logout"
+    )
     # notice the absence of a "Password field", that is built in.
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email'] # username & Password are required by default.
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["email"]  # username & Password are required by default.
 
     objects = UserManager()
 
@@ -61,7 +65,7 @@ class Users(AbstractBaseUser):
         # The user is identified by their email address
         return self.first_name
 
-    def __str__(self):             
+    def __str__(self):
         return self.email
 
     def has_perm(self, perm, obj=None):
@@ -89,11 +93,12 @@ class Users(AbstractBaseUser):
         "Is the user active?"
         return self.active
 
+
 class Addresses(models.Model):
     address = models.TextField(max_length=500)
-    city_name = models.CharField(max_length=200, blank=True,null=True)
-    pincode = models.CharField(max_length=10, blank=True,null=True)
-    state_name = models.CharField(max_length=165, blank=True,null=True)
+    city_name = models.CharField(max_length=200, blank=True, null=True)
+    pincode = models.CharField(max_length=10, blank=True, null=True)
+    state_name = models.CharField(max_length=165, blank=True, null=True)
     country_name = models.CharField(max_length=40, unique=True, blank=True)
 
     class Meta:

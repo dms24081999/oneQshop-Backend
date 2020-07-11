@@ -29,8 +29,15 @@ class MyBackend(JWTAuthentication):
                 decoded_token = jwt.decode(
                     token, settings.SECRET_KEY, algorithms=["HS256"]
                 )
-                all_logout_date=int(self.get_user(auth_token).all_logout.strip() or 0) if self.get_user(auth_token).all_logout else 0
-                if all_logout_date > int(decoded_token["issued"]) and all_logout_date!=0: 
+                all_logout_date = (
+                    int(self.get_user(auth_token).all_logout.strip() or 0)
+                    if self.get_user(auth_token).all_logout
+                    else 0
+                )
+                if (
+                    all_logout_date > int(decoded_token["issued"])
+                    and all_logout_date != 0
+                ):
                     messages.append(
                         {
                             "token_class": AuthToken.__name__,
@@ -38,7 +45,7 @@ class MyBackend(JWTAuthentication):
                             "message": "Token has Expired!!!",
                         }
                     )
-                else: 
+                else:
                     return auth_token
             except TokenError as e:
                 messages.append(

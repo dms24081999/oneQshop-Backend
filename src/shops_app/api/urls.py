@@ -6,9 +6,6 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 
 # For listing all users and creating new user, to view a single user append '/1' that is '/id' in the URL  path 'list/fullinfo'
-router.register(r"", ShopsFullInfoAPIView) 
+router.register(r"", ShopsFullInfoAPIView)
 
-urlpatterns = [
-    path("", include(router.urls)),
-]
-
+urlpatterns = [path("", include(router.urls))]
