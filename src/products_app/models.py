@@ -25,6 +25,30 @@ class Categories(models.Model):
         db_table = "categories"
 
 
+class ProductImages(models.Model):
+    if not settings.AWS:
+        image = models.FileField(
+            storage=FileSystemStorage(),
+            upload_to=settings.AWS_PUBLIC_MEDIA_LOCATION + "/products/main/",
+            db_column="image",
+            null=True,
+            blank=True,
+        )
+    else:
+        image = models.FileField(
+            storage=ProductMainPrictureStorage(),
+            db_column="image",
+            null=True,
+            blank=True,
+        )
+    main_image = models.BooleanField(default=False, db_column="main_image")
+
+    class Meta:
+        verbose_name = "Product Image"
+        verbose_name_plural = "Product Images"
+        db_table = "product_images"
+
+
 class Products(models.Model):
     barcode = models.CharField(
         db_column="barcode", max_length=25, unique=True, null=False, blank=False
@@ -36,26 +60,14 @@ class Products(models.Model):
         db_column="short_name", max_length=255, null=False, blank=False
     )
     category = models.ForeignKey(
-        "Categories",
+        Categories,
         db_column="category",
         on_delete=models.CASCADE,
         related_name="products_category",
     )
-    if not settings.AWS:
-        main_image = models.FileField(
-            storage=FileSystemStorage(),
-            upload_to=settings.AWS_PUBLIC_MEDIA_LOCATION + "/products/main/",
-            db_column="main_image",
-            null=True,
-            blank=True,
-        )
-    else:
-        main_image = models.FileField(
-            storage=ProductMainPrictureStorage(),
-            db_column="main_image",
-            null=True,
-            blank=True,
-        )
+    images = models.ManyToManyField(
+        ProductImages, related_name="product_images", blank=True, db_column="images"
+    )
 
     class Meta:
         verbose_name = "Product"

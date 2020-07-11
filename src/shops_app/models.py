@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from products_app.models import Products
 
 # Create your models here.
 
@@ -21,3 +22,23 @@ class Shops(models.Model):
         verbose_name = "Shop"
         verbose_name_plural = "Shops"
         db_table = "shops"
+
+
+class ShopProducts(models.Model):
+    product = models.ForeignKey(
+        Products,
+        db_column="product",
+        on_delete=models.CASCADE,
+        related_name="shopproduct_product",
+    )
+    shop = models.ForeignKey(
+        Shops,
+        db_column="shop",
+        on_delete=models.CASCADE,
+        related_name="shopproduct_name",
+    )
+
+    class Meta:
+        verbose_name = "Shop Product"
+        verbose_name_plural = "Shop Products"
+        db_table = "shop_products"

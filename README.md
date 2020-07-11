@@ -17,6 +17,7 @@ sudo apt install python3-virtualenv python3-pip
 ```
 virtualenv -p python3.8 unix-env3.8
 source ./unix-env3.8/bin/activate
+source ./.bashrc
 ```
 
 ## Install requirements:
