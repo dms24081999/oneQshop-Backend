@@ -29,6 +29,7 @@ urlpatterns = [
     path('api/login/token/custom/', MyTokenObtainPairView.as_view()),
     # path('user/', include('users_app.urls')),
     path('api/users/', include('users_app.api.urls')),
+    path('api/shops/', include('shops_app.api.urls')),
     path('api/products/', include('products_app.api.urls')),
 ]
 
