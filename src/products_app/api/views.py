@@ -192,3 +192,17 @@ class ProductImagesFullInfoAPIView(ModelViewSet):
             instance = self.get_object()
             self.perform_destroy(instance)
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ImagesTrainingAPI(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, format=None):
+        products = dict()
+        for product in Products.objects.all():
+            for images in ProductImages.objects.filter(id__in=product.images.all()):
+                if images.main_image == True:
+                    products[product.id] = images.image.url
+                    break
+        print(products)
+        return Response(products)

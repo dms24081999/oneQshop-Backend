@@ -9,5 +9,8 @@ router = routers.DefaultRouter()
 router.register(r"product", ProductsFullInfoAPIView)
 router.register(r"image", ProductImagesFullInfoAPIView)
 router.register(r"category", CategoriesFullInfoAPIView)
-
-urlpatterns = [path("", include(router.urls))]
+# ImagesTrainingAPI
+urlpatterns = [
+    path("", include(router.urls)),
+    path("train/", ImagesTrainingAPI.as_view()),
+]
