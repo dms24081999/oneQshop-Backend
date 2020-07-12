@@ -82,12 +82,13 @@ class ShopProductsFullInfoAPIView(ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         context = super(ShopProductsFullInfoAPIView, self).get_queryset(*args, **kwargs)
         qs = self.queryset
-        query = self.request.GET.get("s")
-        if query is not None:
+        shop_id_query = self.request.GET.get("shop")
+        search = self.request.GET.get("s")
+        if shop_id_query is not None:
+            qs = qs.filter(Q(shop__id=int(shop_id_query))).distinct()
+        if search is not None:
             qs = qs.filter(
-                Q(name__icontains=query)
-                | Q(short_name__icontains=query)
-                | Q(barcode__icontains=query)
+                Q(shop__name__icontains=search) | Q(product__name__icontains=search)
             ).distinct()
         return qs
 
