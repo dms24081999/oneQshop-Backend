@@ -8,6 +8,11 @@ pre-commit install
 pre-commit run --all-files
 ```
 
+## Format files before commit
+```
+pre-commit run --all-files
+```
+
 ## Install Python Tools:
 ```
 sudo apt install python3-virtualenv python3-pip
@@ -30,6 +35,7 @@ pip install -r requirements.txt
 cd src
 python manage.py makemigrations
 python manage.py migrate
+python manage.py showmigrations
 ```
 
 ## Create Super-user:
@@ -42,4 +48,19 @@ python manage.py createsuperuser
 ```
 cd src
 python manage.py runserver
+```
+
+## Reset Migrations
+```
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+```
+
+## Populate Database
+```
+python manage.py populate_db \
+    --users_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/users.csv" \
+    --categories_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/categories.csv" \
+    --product_images_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/product_images.csv" \
+    --products_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/products.csv"
 ```

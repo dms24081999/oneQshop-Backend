@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "storages",
     "rest_framework",
+    "management",
     "users_app",
     "shops_app",
     "products_app",
@@ -86,7 +87,7 @@ WSGI_APPLICATION = "mainsite.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "NAME": os.path.join(BASE_DIR, "db1.sqlite3"),
     }
 }
 

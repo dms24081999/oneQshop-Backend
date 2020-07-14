@@ -24,6 +24,9 @@ class Categories(models.Model):
         verbose_name_plural = "Categories"
         db_table = "categories"
 
+    def __str__(self):
+        return self.name
+
 
 class ProductImages(models.Model):
     if not settings.AWS:
@@ -47,6 +50,9 @@ class ProductImages(models.Model):
         verbose_name = "Product Image"
         verbose_name_plural = "Product Images"
         db_table = "product_images"
+
+    def __str__(self):
+        return self.image.name
 
 
 class Products(models.Model):
@@ -73,6 +79,9 @@ class Products(models.Model):
         verbose_name = "Product"
         verbose_name_plural = "Products"
         db_table = "products"
+
+    def __str__(self):
+        return self.name
 
 
 # class Document(models.Model):
