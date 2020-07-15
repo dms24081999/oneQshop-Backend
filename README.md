@@ -64,3 +64,11 @@ python manage.py populate_db \
     --product_images_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/product_images.csv" \
     --products_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/products.csv"
 ```
+
+## Untrack files already added to git repository based on .gitignore
+Commit all Changes and
+```
+git rm -r --cached .
+git add .
+git commit -m ".gitignore fix"
+```
