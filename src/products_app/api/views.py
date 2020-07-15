@@ -9,6 +9,8 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.core import serializers as django_serializers
+import json
 
 Users = get_user_model()
 
@@ -198,7 +200,7 @@ class ProductImagesFullInfoAPIView(ModelViewSet):
 class ImagesTrainingAPI(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request, format=None):
+    def get(self, request, *args, **kwargs):
         products = dict()
         for product in Products.objects.all():
             for images in ProductImages.objects.filter(id__in=product.images.all()):
@@ -212,7 +214,7 @@ class ImagesTrainingAPI(APIView):
 class ProductVisualSimilarityRecommendationAPI(APIView):
     permission_classes = [AllowAny]
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.filename = settings.PRODUCT_VISUAL_RECOMMEND_FILENAMES
         self.model = settings.PRODUCT_VISUAL_RECOMMEND_MODEL
         self.nb_closest_images = settings.PRODUCT_VISUAL_RECOMMEND_TOTAL
@@ -236,9 +238,15 @@ class ProductVisualSimilarityRecommendationAPI(APIView):
             )
         return recommend
 
-    def get(self, request, pk, format=None):
+    def get(self, request, pk, *args, **kwargs):
         # print(self.filename)
-        recommend = None
+        products_recommend = []
         if str(pk) in self.filename:
             recommend = self.retrieve_most_similar_products(str(pk))
-        return Response(recommend)
+            queryset = Products.objects.filter(id__in=recommend)
+            serializer = ProductsSerializer(queryset, many=True)
+            products_recommend = serializer.data
+        return Response(products_recommend)
+        ## Alternative Method
+        #     products_recommend = django_serializers.serialize('json', data)
+        # return Response(json.loads(products_recommend), content_type="application/json")
