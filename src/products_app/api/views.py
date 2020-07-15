@@ -226,22 +226,19 @@ class ProductVisualSimilarityRecommendationAPI(APIView):
     permission_classes = [AllowAny]
 
     def __init__(self, *args, **kwargs):
-        self.filename = settings.PRODUCT_VISUAL_RECOMMEND_FILENAMES
+        self.ids = settings.PRODUCT_VISUAL_RECOMMEND_IDS
         self.model = settings.PRODUCT_VISUAL_RECOMMEND_MODEL
-        self.nb_closest_images = settings.PRODUCT_VISUAL_RECOMMEND_TOTAL
+        self.nb_closest = settings.PRODUCT_VISUAL_RECOMMEND_TOTAL
 
-    def retrieve_most_similar_products(self, given_img):
+    def retrieve_most_similar_products(self, given_id):
         print("-----------------------------------------------------------------------")
         print("most similar products:")
-        closest_imgs = self.model[given_img].sort_values(ascending=False)[1:].index
-        closest_imgs_scores = self.model[given_img].sort_values(ascending=False)[1:]
-        # print(closest_imgs)
-        # print(closest_imgs_scores)
+        closest_imgs = self.model[given_id].sort_values(ascending=False)[1:].index
+        closest_imgs_scores = self.model[given_id].sort_values(ascending=False)[1:]
         print("-----------------------------------------------------------------------")
-
         recommend = list()
-        for i in range(0, self.nb_closest_images):
-            recommend.append(closest_imgs[i])
+        for i in range(0, self.nb_closest):
+            recommend.append(int(closest_imgs[i]))
             print(
                 str(closest_imgs[i]),
                 "| similarity score :",
@@ -250,14 +247,49 @@ class ProductVisualSimilarityRecommendationAPI(APIView):
         return recommend
 
     def get(self, request, pk, *args, **kwargs):
-        # print(self.filename)
+        # print(self.ids)
         products_recommend = []
-        if str(pk) in self.filename:
+        if str(pk) in self.ids:
             recommend = self.retrieve_most_similar_products(str(pk))
-            queryset = Products.objects.filter(id__in=recommend)
+            queryset = [Products.objects.get(id=id) for id in recommend]
             serializer = ProductsSerializer(queryset, many=True)
             products_recommend = serializer.data
         return Response(products_recommend)
         ## Alternative Method
         #     products_recommend = django_serializers.serialize('json', data)
         # return Response(json.loads(products_recommend), content_type="application/json")
+
+
+class ProductNameSimilarityRecommendationAPI(APIView):
+    permission_classes = [AllowAny]
+
+    def __init__(self, *args, **kwargs):
+        self.ids = settings.PRODUCT_NAME_RECOMMEND_IDS
+        self.model = settings.PRODUCT_NAME_RECOMMEND_MODEL
+        self.nb_closest = settings.PRODUCT_NAME_RECOMMEND_TOTAL
+
+    def retrieve_most_similar_products(self, given_id):
+        print("-----------------------------------------------------------------------")
+        print("most similar products:")
+        closest_name = self.model[given_id].sort_values(ascending=False)[1:].index
+        closest_name_scores = self.model[given_id].sort_values(ascending=False)[1:]
+        print("-----------------------------------------------------------------------")
+        recommend = list()
+        for i in range(0, self.nb_closest):
+            recommend.append(int(closest_name[i]))
+            print(
+                str(closest_name[i]),
+                "| similarity score :",
+                closest_name_scores[(closest_name[i])],
+            )
+        return recommend
+
+    def get(self, request, pk, *args, **kwargs):
+        # print(self.ids)
+        products_recommend = []
+        if str(pk) in self.ids:
+            recommend = self.retrieve_most_similar_products(str(pk))
+            queryset = [Products.objects.get(id=id) for id in recommend]
+            serializer = ProductsSerializer(queryset, many=True)
+            products_recommend = serializer.data
+        return Response(products_recommend)

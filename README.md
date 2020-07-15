@@ -57,7 +57,12 @@ find . -path "*/migrations/*.pyc"  -delete
 ```
 
 ## Populate Database
+Delete previous database
 ```
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+python manage.py makemigrations
+python manage.py migrate
 python manage.py populate_db \
     --users_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/users.csv" \
     --categories_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/categories.csv" \

@@ -17,4 +17,5 @@ urlpatterns = [
     path(
         "recommend/visual/<int:pk>/", ProductVisualSimilarityRecommendationAPI.as_view()
     ),
+    path("recommend/name/<int:pk>/", ProductNameSimilarityRecommendationAPI.as_view()),
 ]

@@ -81,7 +81,7 @@ class Products(models.Model):
         db_table = "products"
 
     def __str__(self):
-        return self.name
+        return "(" + str(self.pk) + ") " + self.name
 
 
 # class Document(models.Model):

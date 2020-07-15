@@ -90,7 +90,7 @@ WSGI_APPLICATION = "mainsite.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db1.sqlite3"),
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
 
@@ -196,17 +196,27 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")  # password
 EMAIL_PORT = config("EMAIL_PORT", cast=int)
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 
+# django-import-export
+IMPORT_EXPORT_USE_TRANSACTIONS = True
+
 
 # PRODUCT_VISUAL_RECOMMEND
 with open(
     os.path.join(BASE_DIR, "ai", "product_visual_similarity", "filenames.pickle"), "rb"
 ) as f:
-    PRODUCT_VISUAL_RECOMMEND_FILENAMES = pickle.load(f)
+    PRODUCT_VISUAL_RECOMMEND_IDS = pickle.load(f)
 PRODUCT_VISUAL_RECOMMEND_MODEL = pd.read_csv(
     os.path.join(BASE_DIR, "ai", "product_visual_similarity", "model.csv"),
     index_col=[0],
 )
 PRODUCT_VISUAL_RECOMMEND_TOTAL = 3
 
-# django-import-export
-IMPORT_EXPORT_USE_TRANSACTIONS = True
+# PRODUCT_NAME_RECOMMEND
+with open(
+    os.path.join(BASE_DIR, "ai", "product_name_similarity", "ids.pickle"), "rb"
+) as f:
+    PRODUCT_NAME_RECOMMEND_IDS = pickle.load(f)
+PRODUCT_NAME_RECOMMEND_MODEL = pd.read_csv(
+    os.path.join(BASE_DIR, "ai", "product_name_similarity", "model.csv"), index_col=[0]
+)
+PRODUCT_NAME_RECOMMEND_TOTAL = 3
