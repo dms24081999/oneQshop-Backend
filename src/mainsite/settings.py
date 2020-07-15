@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from decouple import config, Csv
 from datetime import timedelta
+import pandas as pd
+import pickle
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -183,6 +185,7 @@ else:
     MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
     DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
+
 # email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = config("EMAIL_HOST")  # mail service smtp
@@ -190,3 +193,15 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")  # email id
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")  # password
 EMAIL_PORT = config("EMAIL_PORT", cast=int)
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
+
+
+# PRODUCT_VISUAL_RECOMMEND
+with open(
+    os.path.join(BASE_DIR, "ai", "product_visual_similarity", "filenames.pickle"), "rb"
+) as f:
+    PRODUCT_VISUAL_RECOMMEND_FILENAMES = pickle.load(f)
+PRODUCT_VISUAL_RECOMMEND_MODEL = pd.read_csv(
+    os.path.join(BASE_DIR, "ai", "product_visual_similarity", "model.csv"),
+    index_col=[0],
+)
+PRODUCT_VISUAL_RECOMMEND_TOTAL = 3

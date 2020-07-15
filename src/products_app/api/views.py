@@ -8,6 +8,7 @@ from rest_framework import status
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 Users = get_user_model()
 
@@ -206,3 +207,38 @@ class ImagesTrainingAPI(APIView):
                     break
         print(products)
         return Response(products)
+
+
+class ProductVisualSimilarityRecommendationAPI(APIView):
+    permission_classes = [AllowAny]
+
+    def __init__(self, **kwargs):
+        self.filename = settings.PRODUCT_VISUAL_RECOMMEND_FILENAMES
+        self.model = settings.PRODUCT_VISUAL_RECOMMEND_MODEL
+        self.nb_closest_images = settings.PRODUCT_VISUAL_RECOMMEND_TOTAL
+
+    def retrieve_most_similar_products(self, given_img):
+        print("-----------------------------------------------------------------------")
+        print("most similar products:")
+        closest_imgs = self.model[given_img].sort_values(ascending=False)[1:].index
+        closest_imgs_scores = self.model[given_img].sort_values(ascending=False)[1:]
+        # print(closest_imgs)
+        # print(closest_imgs_scores)
+        print("-----------------------------------------------------------------------")
+
+        recommend = list()
+        for i in range(0, self.nb_closest_images):
+            recommend.append(closest_imgs[i])
+            print(
+                str(closest_imgs[i]),
+                "| similarity score :",
+                closest_imgs_scores[(closest_imgs[i])],
+            )
+        return recommend
+
+    def get(self, request, pk, format=None):
+        # print(self.filename)
+        recommend = None
+        if str(pk) in self.filename:
+            recommend = self.retrieve_most_similar_products(str(pk))
+        return Response(recommend)
