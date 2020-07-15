@@ -1,8 +1,17 @@
-__pycache__/
-migrations/
+# Virtual Environments
 unix-env3.8/
 env3.8/
 env/
-*.sqlite3
+
+# Static and media files
 mediafiles/
 staticfiles/
+
+# Cache
+__pycache__/
+
+# Migrations
+migrations/
+
+# Database
+*.sqlite3

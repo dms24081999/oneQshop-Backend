@@ -12,7 +12,8 @@ router.register(r"category", CategoriesFullInfoAPIView)
 # ImagesTrainingAPI
 urlpatterns = [
     path("", include(router.urls)),
-    path("train/", ImagesTrainingAPI.as_view()),
+    path("dataset/images/", ProductImagesTrainingAPI.as_view()),
+    path("dataset/names/", ProductNamesTrainingAPI.as_view()),
     path(
         "recommend/visual/<int:pk>/", ProductVisualSimilarityRecommendationAPI.as_view()
     ),

@@ -1,82 +1,82 @@
 barcode,name,short_name,category,images
-1,Fruits-Apple-Golden-Delicious_Iconic,Fruits-Apple-Golden-Delicious_Iconic,2,1
-2,Fruits-Apple-Granny-Smith_Iconic,Fruits-Apple-Granny-Smith_Iconic,2,2
-3,Fruits-Apple-Pink-Lady_Iconic,Fruits-Apple-Pink-Lady_Iconic,2,3
-4,Fruits-Apple-Red-Delicious_Iconic,Fruits-Apple-Red-Delicious_Iconic,2,4
-5,Fruits-Apple-Royal-Gala_Iconic,Fruits-Apple-Royal-Gala_Iconic,2,5
-6,Fruits-Avocado_Iconic,Fruits-Avocado_Iconic,2,6
-7,Fruits-Banana_Iconic,Fruits-Banana_Iconic,2,7
-8,Fruits-Kiwi_Iconic,Fruits-Kiwi_Iconic,2,8
-9,Fruits-Lemon_Iconic,Fruits-Lemon_Iconic,2,9
-10,Fruits-Lime_Iconic,Fruits-Lime_Iconic,2,10
-11,Fruits-Mango_Iconic,Fruits-Mango_Iconic,2,11
-12,Fruits-Melon-Cantaloupe_Iconic,Fruits-Melon-Cantaloupe_Iconic,2,12
-13,Fruits-Melon-Galia-Melon_Iconic,Fruits-Melon-Galia-Melon_Iconic,2,13
-14,Fruits-Melon-Honeydew-Melon_Iconic,Fruits-Melon-Honeydew-Melon_Iconic,2,01
-15,Fruits-Melon-Watermelon_Iconic,Fruits-Melon-Watermelon_Iconic,2,15
-16,Fruits-Nectarine_Iconic,Fruits-Nectarine_Iconic,2,16
-17,Fruits-Orange_Iconic,Fruits-Orange_Iconic,2,17
-18,Fruits-Papaya_Iconic,Fruits-Papaya_Iconic,2,18
-19,Fruits-Passion-Fruit_Iconic,Fruits-Passion-Fruit_Iconic,2,19
-20,Fruits-Peach_Iconic,Fruits-Peach_Iconic,2,20
-21,Fruits-Pear-Anjou_Iconic,Fruits-Pear-Anjou_Iconic,2,21
-22,Fruits-Pear-Conference_Iconic,Fruits-Pear-Conference_Iconic,2,22
-23,Fruits-Pear-Kaiser_Iconic,Fruits-Pear-Kaiser_Iconic,2,23
-24,Fruits-Pineapple_Iconic,Fruits-Pineapple_Iconic,2,24
-25,Fruits-Plum_Iconic,Fruits-Plum_Iconic,2,25
-26,Fruits-Pomegranate_Iconic,Fruits-Pomegranate_Iconic,2,26
-27,Fruits-Red-Grapefruit_Iconic,Fruits-Red-Grapefruit_Iconic,2,27
-28,Fruits-Satsumas_Iconic,Fruits-Satsumas_Iconic,2,28
-29,Packages-Arla-Sour-Milk_Iconic,Packages-Arla-Sour-Milk_Iconic,1,29
-30,Packages-Juice-Bravo-Apple-Juice_Iconic,Packages-Juice-Bravo-Apple-Juice_Iconic,1,30
-31,Packages-Juice-Bravo-Orange-Juice_Iconic,Packages-Juice-Bravo-Orange-Juice_Iconic,1,31
-32,Packages-Juice-God-Morgon-Apple-Juice_Iconic,Packages-Juice-God-Morgon-Apple-Juice_Iconic,1,32
-33,Packages-Juice-God-Morgon-Orange-Juice_Iconic,Packages-Juice-God-Morgon-Orange-Juice_Iconic,1,33
-34,Packages-Juice-God-Morgon-Orange-Red-Grapefruit-Juice_Iconic,Packages-Juice-God-Morgon-Orange-Red-Grapefruit-Juice_Iconic,1,34
-35,Packages-Juice-God-Morgon-Red-Grapefruit-Juice_Iconic,Packages-Juice-God-Morgon-Red-Grapefruit-Juice_Iconic,1,35
-36,Packages-Juice-Tropicana-Apple-Juice_Iconic,Packages-Juice-Tropicana-Apple-Juice_Iconic,1,36
-37,Packages-Juice-Tropicana-Golden-Grapefruit_Iconic,Packages-Juice-Tropicana-Golden-Grapefruit_Iconic,1,37
-38,Packages-Juice-Tropicana-Juice-Smooth_Iconic,Packages-Juice-Tropicana-Juice-Smooth_Iconic,1,38
-39,Packages-Juice-Tropicana-Mandarin-Morning_Iconic,Packages-Juice-Tropicana-Mandarin-Morning_Iconic,1,39
-40,Packages-Milk-Arla-Ecological-Medium-Fat-Milk_Iconic,Packages-Milk-Arla-Ecological-Medium-Fat-Milk_Iconic,1,40
-41,Packages-Milk-Arla-Lactose-Medium-Fat-Milk_Iconic,Packages-Milk-Arla-Lactose-Medium-Fat-Milk_Iconic,1,41
-42,Packages-Milk-Arla-Medium-Fat-Milk_Iconic,Packages-Milk-Arla-Medium-Fat-Milk_Iconic,1,42
-43,Packages-Milk-Arla-Standard-Milk_Iconic,Packages-Milk-Arla-Standard-Milk_Iconic,1,43
-44,Packages-Milk-Garant-Ecological-Medium-Fat-Milk_Iconic,Packages-Milk-Garant-Ecological-Medium-Fat-Milk_Iconic,1,44
-45,Packages-Milk-Garant-Ecological-Standard-Milk_Iconic,Packages-Milk-Garant-Ecological-Standard-Milk_Iconic,1,45
-46,Packages-Oatly-Natural-Oatghurt_Iconic,Packages-Oatly-Natural-Oatghurt_Iconic,1,46
-47,Packages-Oatly-Oat-Milk_Iconic,Packages-Oatly-Oat-Milk_Iconic,1,47
-48,Packages-Sour-Cream-Arla-Ecological-Sour-Cream_Iconic,Packages-Sour-Cream-Arla-Ecological-Sour-Cream_Iconic,1,48
-49,Packages-Sour-Cream-Arla-Sour-Cream_Iconic,Packages-Sour-Cream-Arla-Sour-Cream_Iconic,1,49
-50,Packages-Soyghurt-Alpro-Blueberry-Soyghurt_Iconic,Packages-Soyghurt-Alpro-Blueberry-Soyghurt_Iconic,1,50
-51,Packages-Soyghurt-Alpro-Vanilla-Soyghurt_Iconic,Packages-Soyghurt-Alpro-Vanilla-Soyghurt_Iconic,1,51
-52,Packages-Soy-Milk-Alpro-Fresh-Soy-Milk_Iconic,Packages-Soy-Milk-Alpro-Fresh-Soy-Milk_Iconic,1,52
-53,Packages-Soy-Milk-Alpro-Shelf-Soy-Milk_Iconic,Packages-Soy-Milk-Alpro-Shelf-Soy-Milk_Iconic,1,53
-54,Packages-Yoghurt-Arla-Mild-Vanilla-Yoghurt_Iconic,Packages-Yoghurt-Arla-Mild-Vanilla-Yoghurt_Iconic,1,54
-55,Packages-Yoghurt-Arla-Natural-Mild-Low-Fat-Yoghurt_Iconic,Packages-Yoghurt-Arla-Natural-Mild-Low-Fat-Yoghurt_Iconic,1,55
-56,Packages-Yoghurt-Arla-Natural-Yoghurt_Iconic,Packages-Yoghurt-Arla-Natural-Yoghurt_Iconic,1,56
-57,Packages-Yoghurt-Valio-Vanilla-Yoghurt_Iconic,Packages-Yoghurt-Valio-Vanilla-Yoghurt_Iconic,1,57
-58,Packages-Yoghurt-Yoggi-Strawberry-Yoghurt_Iconic,Packages-Yoghurt-Yoggi-Strawberry-Yoghurt_Iconic,1,58
-59,Packages-Yoghurt-Yoggi-Vanilla-Yoghurt_Iconic,Packages-Yoghurt-Yoggi-Vanilla-Yoghurt_Iconic,1,59
-60,Vegetables-Asparagus_Iconic,Vegetables-Asparagus_Iconic,3,60
-61,Vegetables-Aubergine_Iconic,Vegetables-Aubergine_Iconic,3,61
-62,Vegetables-Brown-Cap-Mushroom_Iconic,Vegetables-Brown-Cap-Mushroom_Iconic,3,62
-63,Vegetables-Cabbage_Iconic,Vegetables-Cabbage_Iconic,3,63
-64,Vegetables-Carrots_Iconic,Vegetables-Carrots_Iconic,3,64
-65,Vegetables-Cucumber_Iconic,Vegetables-Cucumber_Iconic,3,65
-66,Vegetables-Garlic_Iconic,Vegetables-Garlic_Iconic,3,66
-67,Vegetables-Ginger_Iconic,Vegetables-Ginger_Iconic,3,67
-68,Vegetables-Leek_Iconic,Vegetables-Leek_Iconic,3,68
-69,Vegetables-Pepper-Green-Bell-Pepper_Iconic,Vegetables-Pepper-Green-Bell-Pepper_Iconic,3,69
-70,Vegetables-Pepper-Orange-Bell-Pepper_Iconic,Vegetables-Pepper-Orange-Bell-Pepper_Iconic,3,70
-71,Vegetables-Pepper-Red-Bell-Pepper_Iconic,Vegetables-Pepper-Red-Bell-Pepper_Iconic,3,71
-72,Vegetables-Pepper-Yellow-Bell-Pepper_Iconic,Vegetables-Pepper-Yellow-Bell-Pepper_Iconic,3,72
-73,Vegetables-Potato-Floury-Potato_Iconic,Vegetables-Potato-Floury-Potato_Iconic,3,73
-74,Vegetables-Potato-Solid-Potato_Iconic,Vegetables-Potato-Solid-Potato_Iconic,3,74
-75,Vegetables-Potato-Sweet-Potato_Iconic,Vegetables-Potato-Sweet-Potato_Iconic,3,75
-76,Vegetables-Red-Beet_Iconic,Vegetables-Red-Beet_Iconic,3,76
-77,Vegetables-Tomato-Beef-Tomato_Iconic,Vegetables-Tomato-Beef-Tomato_Iconic,3,77
-78,Vegetables-Tomato-Regular-Tomato_Iconic,Vegetables-Tomato-Regular-Tomato_Iconic,3,78
-79,Vegetables-Tomato-Vine-Tomato_Iconic,Vegetables-Tomato-Vine-Tomato_Iconic,3,79
-80,Vegetables-Yellow-Onion_Iconic,Vegetables-Yellow-Onion_Iconic,3,80
-81,Vegetables-Zucchini_Iconic,Vegetables-Zucchini_Iconic,3,81
+1,Apple Golden Delicious,Apple Golden Delicious,2,1
+2,Apple Granny Smith,Apple Granny Smith,2,2
+3,Apple Pink Lady,Apple Pink Lady,2,3
+4,Apple Red Delicious,Apple Red Delicious,2,4
+5,Apple Royal Gala,Apple Royal Gala,2,5
+6,Avocado,Avocado,2,6
+7,Banana,Banana,2,7
+8,Kiwi,Kiwi,2,8
+9,Lemon,Lemon,2,9
+10,Lime,Lime,2,10
+11,Mango,Mango,2,11
+12,Melon Cantaloupe,Melon Cantaloupe,2,12
+13,Melon Galia Melon,Melon Galia Melon,2,13
+14,Melon Honeydew Melon,Melon Honeydew Melon,2,01
+15,Melon Watermelon,Melon Watermelon,2,15
+16,Nectarine,Nectarine,2,16
+17,Orange,Orange,2,17
+18,Papaya,Papaya,2,18
+19,Passion Fruit,Passion Fruit,2,19
+20,Peach,Peach,2,20
+21,Pear Anjou,Pear Anjou,2,21
+22,Pear Conference,Pear Conference,2,22
+23,Pear Kaiser,Pear Kaiser,2,23
+24,Pineapple,Pineapple,2,24
+25,Plum,Plum,2,25
+26,Pomegranate,Pomegranate,2,26
+27,Red Grapefruit,Red Grapefruit,2,27
+28,Satsumas,Satsumas,2,28
+29,Arla Sour Milk,Arla Sour Milk,1,29
+30,Bravo Apple Juice,Bravo Apple Juice,1,30
+31,Bravo Orange Juice,Bravo Orange Juice,1,31
+32,God Morgon Apple Juice,God Morgon Apple Juice,1,32
+33,God Morgon Orange Juice,God Morgon Orange Juice,1,33
+34,God Morgon Orange Red Grapefruit Juice,God Morgon Orange Red Grapefruit Juice,1,34
+35,God Morgon Red Grapefruit Juice,God Morgon Red Grapefruit Juice,1,35
+36,Tropicana Apple Juice,Tropicana Apple Juice,1,36
+37,Tropicana Golden Grapefruit,Tropicana Golden Grapefruit,1,37
+38,Tropicana Smooth,Tropicana Smooth,1,38
+39,Tropicana Mandarin Morning,Tropicana Mandarin Morning,1,39
+40,Arla Ecological Medium Fat Milk,Arla Ecological Medium Fat Milk,1,40
+41,Arla Lactose Medium Fat Milk,Arla Lactose Medium Fat Milk,1,41
+42,Arla Medium Fat Milk,Arla Medium Fat Milk,1,42
+43,Arla Standard Milk,Arla Standard Milk,1,43
+44,Garant Ecological Medium Fat Milk,Garant Ecological Medium Fat Milk,1,44
+45,Garant Ecological Standard Milk,Garant Ecological Standard Milk,1,45
+46,Natural Oatghurt,Natural Oatghurt,1,46
+47,Oat Milk,Oat Milk,1,47
+48,Arla Ecological Sour Cream,Arla Ecological Sour Cream,1,48
+49,Arla Sour Cream,Arla Sour Cream,1,49
+50,Alpro Blueberry Soyghurt,Alpro Blueberry Soyghurt,1,50
+51,Alpro Vanilla Soyghurt,Alpro Vanilla Soyghurt,1,51
+52,Alpro Fresh Soy Milk,Alpro Fresh Soy Milk,1,52
+53,Alpro Shelf Soy Milk,Alpro Shelf Soy Milk,1,53
+54,Arla Mild Vanilla Yoghurt,Arla Mild Vanilla Yoghurt,1,54
+55,Arla Natural Mild Low Fat Yoghurt,Arla Natural Mild Low Fat Yoghurt,1,55
+56,Arla Natural Yoghurt,Arla Natural Yoghurt,1,56
+57,Valio Vanilla Yoghurt,Valio Vanilla Yoghurt,1,57
+58,Yoggi Strawberry Yoghurt,Yoggi Strawberry Yoghurt,1,58
+59,Yoggi Vanilla Yoghurt,Yoggi Vanilla Yoghurt,1,59
+60,Asparagus,Asparagus,3,60
+61,Aubergine,Aubergine,3,61
+62,Brown Cap Mushroom,Brown Cap Mushroom,3,62
+63,Cabbage,Cabbage,3,63
+64,Carrots,Carrots,3,64
+65,Cucumber,Cucumber,3,65
+66,Garlic,Garlic,3,66
+67,Ginger,Ginger,3,67
+68,Leek,Leek,3,68
+69,Green Bell Pepper,Green Bell Pepper,3,69
+70,Orange Bell Pepper,Orange Bell Pepper,3,70
+71,Red Bell Pepper,Red Bell Pepper,3,71
+72,Yellow Bell Pepper,Yellow Bell Pepper,3,72
+73,Floury Potato,Floury Potato,3,73
+74,Solid Potato,Solid Potato,3,74
+75,Sweet Potato,Sweet Potato,3,75
+76,Red Beet,Red Beet,3,76
+77,Beef Tomato,Beef Tomato,3,77
+78,Regular Tomato,Regular Tomato,3,78
+79,Vine Tomato,Vine Tomato,3,79
+80,Yellow Onion,Yellow Onion,3,80
+81,Zucchini,Zucchini,3,81

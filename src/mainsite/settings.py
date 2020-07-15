@@ -150,6 +150,7 @@ STATICFILES_FINDERS = (
 )
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
+
 # aws settings
 AWS = config("AWS", cast=bool)
 AWS_STATIC_LOCATION = "static"
@@ -207,5 +208,5 @@ PRODUCT_VISUAL_RECOMMEND_MODEL = pd.read_csv(
 )
 PRODUCT_VISUAL_RECOMMEND_TOTAL = 3
 
-
+# django-import-export
 IMPORT_EXPORT_USE_TRANSACTIONS = True

@@ -197,7 +197,7 @@ class ProductImagesFullInfoAPIView(ModelViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class ImagesTrainingAPI(APIView):
+class ProductImagesTrainingAPI(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
@@ -207,6 +207,17 @@ class ImagesTrainingAPI(APIView):
                 if images.main_image == True:
                     products[product.id] = images.image.url
                     break
+        print(products)
+        return Response(products)
+
+
+class ProductNamesTrainingAPI(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        products = dict()
+        for product in Products.objects.all():
+            products[product.id] = product.name
         print(products)
         return Response(products)
 
