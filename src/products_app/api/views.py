@@ -11,6 +11,7 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.core import serializers as django_serializers
 import json
+import pandas as pd
 
 Users = get_user_model()
 
@@ -310,4 +311,47 @@ class ProductNameSimilarityRecommendationAPI(APIView):
             queryset = [Products.objects.get(id=id) for id in recommend]
             serializer = ProductsSerializer(queryset, many=True)
             products_recommend = serializer.data
+        return Response(products_recommend)
+
+
+class UserBasedCollaborativeFilteringRecommendationAPI(APIView):
+    permission_classes = [AllowAny]
+
+    def __init__(self, *args, **kwargs):
+        self.pivot_df = settings.USER_BASED_COLLABORATIVE_FILTERING_PIVOT_DF
+        self.preds_df = settings.USER_BASED_COLLABORATIVE_FILTERING_PREDS_DF
+        self.num_recommendations = (
+            settings.USER_BASED_COLLABORATIVE_FILTERING_RECOMMEND_TOTAL
+        )
+
+    def recommend_items(self, userID):
+        # index starts at 0
+        user_idx = userID
+        # Get and sort the user's ratings
+        sorted_user_ratings = self.pivot_df.loc[user_idx].sort_values(ascending=False)
+        # sorted_user_ratings
+        sorted_user_predictions = self.preds_df.loc[user_idx].sort_values(
+            ascending=False
+        )
+        # sorted_user_predictions
+        temp = pd.concat([sorted_user_ratings, sorted_user_predictions], axis=1)
+        temp.index.name = "Recommended Items"
+        temp.columns = ["user_ratings", "user_predictions"]
+        temp = temp.loc[temp.user_ratings == 0]
+        temp = temp.sort_values("user_predictions", ascending=False)
+        print(
+            "\nBelow are the recommended items for user(user_id = {}):\n".format(userID)
+        )
+        recommendations = temp.head(self.num_recommendations)
+        print(recommendations)
+        recommendations_list = recommendations.index.values.tolist()
+        return recommendations_list
+
+    def get(self, request, *args, **kwargs):
+        # print(self.ids)
+        products_recommend = []
+        recommend = self.recommend_items(request.user.pk)
+        queryset = [Products.objects.get(id=id) for id in recommend]
+        serializer = ProductsSerializer(queryset, many=True)
+        products_recommend = serializer.data
         return Response(products_recommend)

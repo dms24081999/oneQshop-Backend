@@ -223,3 +223,14 @@ PRODUCT_NAME_RECOMMEND_MODEL = pd.read_csv(
     os.path.join(BASE_DIR, "ai", "product_name_similarity", "model.csv"), index_col=[0]
 )
 PRODUCT_NAME_RECOMMEND_TOTAL = 3
+
+
+USER_BASED_COLLABORATIVE_FILTERING_PIVOT_DF = pd.read_csv(
+    os.path.join(BASE_DIR, "ai", "user_based_collaborative_filtering", "pivotDF.csv"),
+    index_col=[0],
+)
+USER_BASED_COLLABORATIVE_FILTERING_PREDS_DF = pd.read_csv(
+    os.path.join(BASE_DIR, "ai", "user_based_collaborative_filtering", "predsDF.csv"),
+    index_col=[0],
+)
+USER_BASED_COLLABORATIVE_FILTERING_RECOMMEND_TOTAL = 3
