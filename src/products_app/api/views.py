@@ -325,15 +325,13 @@ class UserBasedCollaborativeFilteringRecommendationAPI(APIView):
         )
 
     def recommend_items(self, userID):
-        # index starts at 0
-        user_idx = userID
-        # Get and sort the user's ratings
-        sorted_user_ratings = self.pivot_df.loc[user_idx].sort_values(ascending=False)
-        # sorted_user_ratings
-        sorted_user_predictions = self.preds_df.loc[user_idx].sort_values(
-            ascending=False
-        )
-        # sorted_user_predictions
+        try:
+            sorted_user_ratings = self.pivot_df.loc[userID].sort_values(ascending=False)
+            sorted_user_predictions = self.preds_df.loc[userID].sort_values(
+                ascending=False
+            )
+        except:
+            return []
         temp = pd.concat([sorted_user_ratings, sorted_user_predictions], axis=1)
         temp.index.name = "Recommended Items"
         temp.columns = ["user_ratings", "user_predictions"]
@@ -351,6 +349,42 @@ class UserBasedCollaborativeFilteringRecommendationAPI(APIView):
         # print(self.ids)
         products_recommend = []
         recommend = self.recommend_items(request.user.pk)
+        queryset = [Products.objects.get(id=id) for id in recommend]
+        serializer = ProductsSerializer(queryset, many=True)
+        products_recommend = serializer.data
+        return Response(products_recommend)
+
+
+class ItemBasedCollaborativeFilteringRecommendationAPI(APIView):
+    permission_classes = [AllowAny]
+
+    def __init__(self, *args, **kwargs):
+        self.pivot_df = settings.ITEM_BASED_COLLABORATIVE_FILTERING_PIVOT_DF
+        self.num_recommendations = (
+            settings.ITEM_BASED_COLLABORATIVE_FILTERING_RECOMMEND_TOTAL
+        )
+
+    def recommend_items(self, itemID):
+        df_features = self.pivot_df.pivot(
+            index="user_id", columns="product_id", values="ratings"
+        ).fillna(0)
+        try:
+            df_id = df_features[itemID]
+        except:
+            return []
+        similar = df_features.corrwith(df_id)
+        similar = pd.DataFrame(similar, columns=["Correlation"])
+        similar.dropna(inplace=True)
+        similar.sort_values("Correlation", ascending=False)
+        similar = similar[1 : self.num_recommendations + 1]
+        print(similar)
+        recommendations_list = similar.index.values.tolist()
+        return recommendations_list
+
+    def get(self, request, pk, *args, **kwargs):
+        # print(self.ids)
+        products_recommend = []
+        recommend = self.recommend_items(pk)
         queryset = [Products.objects.get(id=id) for id in recommend]
         serializer = ProductsSerializer(queryset, many=True)
         products_recommend = serializer.data
