@@ -43,9 +43,14 @@ python manage.py showmigrations
 cd src
 python manage.py createsuperuser
 ```
+```
+username: admin
+password: 24081999
+```
 
 ## Run Project:
 ```
+source ./setup.sh
 cd src
 python manage.py runserver
 ```

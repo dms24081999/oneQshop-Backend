@@ -84,14 +84,14 @@ class Products(models.Model):
         return "(" + str(self.pk) + ") " + self.name
 
 
-# class Document(models.Model):
-#     uploaded_at = models.DateTimeField(auto_now_add=True)
-#     upload = models.FileField()
+class Document(models.Model):
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    upload = models.FileField()
 
-#     class Meta:
-#         verbose_name = "Document"
-#         verbose_name_plural = "Documents"
-#         db_table = "documents"
+    class Meta:
+        verbose_name = "Document"
+        verbose_name_plural = "Documents"
+        db_table = "documents"
 
 
 # class PrivateDocument(models.Model):

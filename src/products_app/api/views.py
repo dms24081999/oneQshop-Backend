@@ -15,6 +15,24 @@ import json
 Users = get_user_model()
 
 
+from rest_framework.exceptions import ParseError
+from rest_framework.parsers import FileUploadParser
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+
+class MyUploadView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        file_serializer = FileSerializer(data=request.data)
+        if file_serializer.is_valid():
+            file_serializer.save()
+            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class ProductsFullInfoAPIView(ModelViewSet):
     lookup_field = "pk"
     serializer_class = ProductsSerializer

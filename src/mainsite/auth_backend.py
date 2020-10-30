@@ -16,9 +16,12 @@ class MyBackend(JWTAuthentication):
             return None
         validated_token = self.get_validated_token(raw_token)
         # print(validated_token)
-        user = self.get_user(validated_token)
-        # print("token: ",user,type(user))
-        return user, None
+        if validated_token:
+            user = self.get_user(validated_token)
+            return user, None
+            # print("token: ",user,type(user))
+        else:
+            return None, None
 
     def get_validated_token(self, raw_token):
         messages = []
@@ -55,9 +58,9 @@ class MyBackend(JWTAuthentication):
                         "message": e.args[0],
                     }
                 )
-        raise InvalidToken(
-            {
-                "detail": ("Given token not valid for any token type"),
-                "messages": messages,
-            }
-        )
+        # raise InvalidToken(
+        #     {
+        #         "detail": ("Given token not valid for any token type"),
+        #         "messages": messages,
+        #     }
+        # )

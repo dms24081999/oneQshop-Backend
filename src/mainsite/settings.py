@@ -47,10 +47,12 @@ INSTALLED_APPS = [
     "import_export",
     "storages",
     "rest_framework",
+    "rest_framework.authtoken",
     "management",
     "users_app",
     "shops_app",
     "products_app",
+    "carts_app",
 ]
 
 MIDDLEWARE = [
@@ -127,8 +129,9 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
-        "mainsite.auth_backend.MyBackend",
+        # "mainsite.auth_backend.MyBackend",
     ],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
 }

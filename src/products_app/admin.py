@@ -2,7 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
-from .models import Products, ProductImages, Categories
+from .models import Products, ProductImages, Categories, Document
 
 
 @admin.register(Products)
@@ -17,4 +17,9 @@ class ProductImagesAdmin(ImportExportModelAdmin):
 
 @admin.register(Categories)
 class CategoriesAdmin(ImportExportModelAdmin):
+    pass
+
+
+@admin.register(Document)
+class ProductsAdmin(ImportExportModelAdmin):
     pass

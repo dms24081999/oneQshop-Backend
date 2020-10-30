@@ -3,6 +3,7 @@ from .serializers import *
 from ..models import *
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
 from django.db.models import Q
@@ -10,6 +11,45 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
 Users = get_user_model()
+
+
+class UsersCreateInfoAPIView(CreateAPIView):
+    serializer_class = UsersCreateSerializer
+    permission_classes = [AllowAny]
+    queryset = Users.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
+
+class UsersIsAuthenticatedAPIView(GenericAPIView):
+    serializer_class = UsersSerializer
+    permission_classes = [AllowAny]
+
+    def get_serializer_context(self):
+        context = super(UsersIsAuthenticatedAPIView, self).get_serializer_context()
+        context.update(
+            {
+                "request": self.request
+                # extra data
+            }
+        )
+        return context
+
+    # GET
+    def get(self, request, *args, **kwargs):
+        print("current pk", request.user.pk)
+        if not request.user.is_authenticated:
+            return Response({"detail": "Auth not provided."}, status=400)
+        else:
+            serializer = self.get_serializer(request.user)
+            return Response(serializer.data)
 
 
 class UsersFullInfoAPIView(ModelViewSet):

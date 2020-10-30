@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Products, Categories, ProductImages
+from ..models import Products, Categories, ProductImages, Document
 import json
 
 
@@ -50,3 +50,9 @@ class ProductsSerializer(serializers.ModelSerializer):
     def get_category_details(self, obj):
         serial = CategoriesSerializer(Categories.objects.get(id=obj.category.id))
         return serial.data
+
+
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Document
+        fields = "__all__"
