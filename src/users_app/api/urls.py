@@ -11,6 +11,7 @@ router.register(r"", UsersFullInfoAPIView)
 urlpatterns = [
     path("create/", UsersCreateInfoAPIView.as_view()),
     path("is-authenticated/", UsersIsAuthenticatedAPIView.as_view()),
+    path("change-password/", ChangePasswordAPIView.as_view()),
     path("", include(router.urls)),
     # path("user/currentuser/", CurrentUserAPIView.as_view()),
 ]

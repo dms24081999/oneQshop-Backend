@@ -5,6 +5,15 @@ from django.contrib.auth import get_user_model
 Users = get_user_model()
 
 
+class ChangePasswordSerializer(serializers.Serializer):
+    model = Users
+    """
+    Serializer for password change endpoint.
+    """
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+
 class UsersCreateSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
 
