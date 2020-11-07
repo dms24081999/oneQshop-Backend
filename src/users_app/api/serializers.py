@@ -25,6 +25,7 @@ class UsersCreateSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
+            "phone_number",
             "password",
             "picture",
         ]
@@ -50,6 +51,7 @@ class UsersSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
+            "phone_number",
             "current_user",
             "picture",
         ]

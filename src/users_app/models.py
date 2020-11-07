@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from .managers import UserManager
 from mainsite.storage_backends import ProfilePrictureStorage
 from django.core.files.storage import FileSystemStorage
+from django.core.validators import RegexValidator
 
 
 # Create your models here.
@@ -25,6 +26,13 @@ class Users(AbstractBaseUser):
     username = models.CharField(
         db_column="username", max_length=255, unique=True, null=False, blank=False
     )
+    phone_regex = RegexValidator(
+        regex=r"^\+91\d{10}$",
+        message="Phone number must be entered in the format: '+919876543210'.",
+    )  # ^\+91\d{10}$
+    phone_number = models.CharField(
+        validators=[phone_regex], max_length=14, blank=True, null=True
+    )  # validators should be a list
     if not settings.AWS:
         picture = models.FileField(
             storage=FileSystemStorage(),
