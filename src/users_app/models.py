@@ -15,6 +15,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from .signals import reset_password_token_created
 from django.core.mail import send_mail
+from decouple import config
 
 
 TOKEN_GENERATOR_CLASS = get_token_generator()
@@ -241,8 +242,10 @@ def eligible_for_reset(self):
 def password_reset_token_created(
     sender, instance, reset_password_token, *args, **kwargs
 ):
-    email_plaintext_message = "{}?token={}".format(
-        reverse("reset-password-request"), reset_password_token.key
+    email_plaintext_message = "{hosted_url}{reset_password_url}?token={reset_password_token}".format(
+        hosted_url=config("HOSTED_URL"),
+        reset_password_url=reverse("reset-password-request"),
+        reset_password_token=reset_password_token.key,
     )
     send_mail(
         # title:

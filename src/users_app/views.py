@@ -31,6 +31,7 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from rest_framework import status, exceptions
 from .signals import *
+from decouple import config
 
 
 Users = get_user_model()
@@ -262,6 +263,16 @@ class UsersCreateInfoAPIView(CreateAPIView):
     permission_classes = [AllowAny]
     queryset = Users.objects.all()
 
+    def get_token_ttl(self):
+        return knox_settings.TOKEN_TTL
+
+    def get_expiry_datetime_format(self):
+        return knox_settings.EXPIRY_DATETIME_FORMAT
+
+    def format_expiry_datetime(self, expiry):
+        datetime_format = self.get_expiry_datetime_format()
+        return DateTimeField(format=datetime_format).to_representation(expiry)
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -272,8 +283,14 @@ class UsersCreateInfoAPIView(CreateAPIView):
         ).data
         print("Register user pk: ", user.pk)
         serializerData["current_user"] = user.pk
+        token_ttl = self.get_token_ttl()
+        instance, token = AuthToken.objects.create(user, token_ttl)
         return Response(
-            {"user": serializerData, "token": AuthToken.objects.create(user)[1]},
+            {
+                "user": serializerData,
+                "token": token,
+                "expiry": self.format_expiry_datetime(instance.expiry),
+            },
             status=status.HTTP_201_CREATED,
             headers=headers,
         )
