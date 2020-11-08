@@ -21,6 +21,17 @@ from .settings import knox_settings
 from django.contrib.auth import login
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
+from datetime import timedelta
+from django.core.exceptions import ValidationError
+from django.contrib.auth.password_validation import (
+    validate_password,
+    get_password_validators,
+)
+from django.utils.translation import gettext_lazy as _
+from django.conf import settings
+from rest_framework import status, exceptions
+from .signals import *
+
 
 Users = get_user_model()
 
@@ -106,6 +117,146 @@ class LogoutAllView(APIView):
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 
+# __all__ = [
+#     'ResetPasswordValidateToken',
+#     'ResetPasswordConfirm',
+#     'ResetPasswordRequestToken',
+#     'reset_password_validate_token',
+#     'reset_password_confirm',
+#     'reset_password_request_token'
+# ]
+
+HTTP_USER_AGENT_HEADER = getattr(
+    settings, "DJANGO_REST_PASSWORDRESET_HTTP_USER_AGENT_HEADER", "HTTP_USER_AGENT"
+)
+HTTP_IP_ADDRESS_HEADER = getattr(
+    settings, "DJANGO_REST_PASSWORDRESET_IP_ADDRESS_HEADER", "REMOTE_ADDR"
+)
+
+
+class ResetPasswordValidateToken(
+    GenericAPIView
+):  # An Api View which provides a method to verify that a token is valid
+    throttle_classes = ()
+    permission_classes = ()
+    serializer_class = ResetTokenSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response({"status": "OK"})
+
+
+class ResetPasswordConfirm(
+    GenericAPIView
+):  # An Api View which provides a method to reset a password based on a unique token
+    throttle_classes = ()
+    permission_classes = ()
+    serializer_class = PasswordTokenSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        password = serializer.validated_data["password"]
+        token = serializer.validated_data["token"]
+        reset_password_token = ResetPasswordToken.objects.filter(
+            key=token
+        ).first()  # find token
+        if (
+            reset_password_token.user.eligible_for_reset()
+        ):  # change users password (if we got to this code it means that the user is_active)
+            pre_password_reset.send(
+                sender=self.__class__, user=reset_password_token.user
+            )
+            try:
+                validate_password(
+                    password,
+                    user=reset_password_token.user,
+                    password_validators=get_password_validators(
+                        settings.AUTH_PASSWORD_VALIDATORS
+                    ),
+                )  # validate the password against existing validators
+            except ValidationError as e:
+                raise exceptions.ValidationError(
+                    {"password": e.messages}
+                )  # raise a validation error for the serializer
+            reset_password_token.user.set_password(password)
+            reset_password_token.user.save()
+            post_password_reset.send(
+                sender=self.__class__, user=reset_password_token.user
+            )
+        ResetPasswordToken.objects.filter(
+            user=reset_password_token.user
+        ).delete()  # Delete all password reset tokens for this user
+        return Response({"status": "OK"})
+
+
+class ResetPasswordRequestToken(
+    GenericAPIView
+):  # An Api View which provides a method to request a password reset token based on an e-mail address. Sends a signal reset_password_token_created when a reset token was created
+    throttle_classes = ()
+    permission_classes = ()
+    serializer_class = EmailSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data["email"]
+        password_reset_token_validation_time = (
+            get_password_reset_token_expiry_time()
+        )  # before we continue, delete all existing expired tokens
+        now_minus_expiry_time = timezone.now() - timedelta(
+            hours=password_reset_token_validation_time
+        )  # datetime.now minus expiry hours
+        clear_expired(
+            now_minus_expiry_time
+        )  # delete all tokens where created_at < now - 24 hours
+        users = Users.objects.filter(
+            **{"{}__iexact".format(get_password_reset_lookup_field()): email}
+        )  # find a user by email address (case insensitive search)
+        active_user_found = False
+        # iterate over all users and check if there is any user that is active
+        # also check whether the password can be changed (is useable), as there could be users that are not allowed to change their password (e.g., LDAP user)
+        for user in users:
+            if user.eligible_for_reset():
+                active_user_found = True
+        # No active user found, raise a validation error but not if DJANGO_REST_PASSWORDRESET_NO_INFORMATION_LEAKAGE == True
+        if not active_user_found and not getattr(
+            settings, "DJANGO_REST_PASSWORDRESET_NO_INFORMATION_LEAKAGE", False
+        ):
+            raise exceptions.ValidationError(
+                {
+                    "email": [
+                        _(
+                            "We couldn't find an account associated with that email. Please try a different e-mail address."
+                        )
+                    ]
+                }
+            )
+
+        # last but not least: iterate over all users that are active and can change their password and create a Reset Password Token and send a signal with the created token
+        for user in users:
+            if user.eligible_for_reset():
+                token = None  # define the token as none for now
+                if (
+                    user.password_reset_tokens.all().count() > 0
+                ):  # check if the user already has a token
+                    token = user.password_reset_tokens.all()[
+                        0
+                    ]  # yes, already has a token, re-use this token
+                else:
+                    token = ResetPasswordToken.objects.create(
+                        user=user,
+                        user_agent=request.META.get(HTTP_USER_AGENT_HEADER, ""),
+                        ip_address=request.META.get(HTTP_IP_ADDRESS_HEADER, ""),
+                    )  # no token exists, generate a new token
+                # send a signal that the password token was created let whoever receives this signal handle sending the email for the password reset
+                reset_password_token_created.send(
+                    sender=self.__class__, instance=self, reset_password_token=token
+                )
+        return Response({"status": "OK"})
+
+
 class UsersCreateInfoAPIView(CreateAPIView):
     serializer_class = UsersCreateSerializer
     permission_classes = [AllowAny]
@@ -126,19 +277,9 @@ class UsersCreateInfoAPIView(CreateAPIView):
             status=status.HTTP_201_CREATED,
             headers=headers,
         )
-        # serializer = self.get_serializer(data=request.data)
-        # serializer.is_valid(raise_exception=True)
-        # self.perform_create(serializer)
-
-        # user=serializer.data
-        # return Response({
-        #     "user": user,
-        #     "token": AuthToken.objects.create(user)[1]
-        # }, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class ChangePasswordAPIView(UpdateAPIView):
-    """An endpoint for changing password."""
+class ChangePasswordAPIView(UpdateAPIView):  # """An endpoint for changing password."""
 
     serializer_class = ChangePasswordSerializer
     model = Users
