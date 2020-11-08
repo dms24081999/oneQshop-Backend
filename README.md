@@ -82,3 +82,10 @@ git rm -r --cached .
 git add .
 git commit -m ".gitignore fix"
 ```
+
+## Run localhost online
+```
+ngrok http 8000
+npm install -g localtunnel
+lt --port 8000
+```

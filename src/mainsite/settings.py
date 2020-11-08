@@ -127,9 +127,10 @@ USE_TZ = True
 # REST API
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.BasicAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
+        # "rest_framework.authentication.BasicAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.TokenAuthentication",
+        "users_app.auth.TokenAuthentication",
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         # "mainsite.auth_backend.MyBackend",
     ],

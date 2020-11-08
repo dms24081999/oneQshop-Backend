@@ -5,6 +5,9 @@ from .managers import UserManager
 from mainsite.storage_backends import ProfilePrictureStorage
 from django.core.files.storage import FileSystemStorage
 from django.core.validators import RegexValidator
+from django.utils import timezone
+from . import crypto
+from .settings import CONSTANTS, knox_settings
 
 
 # Create your models here.
@@ -113,3 +116,40 @@ class Addresses(models.Model):
         verbose_name = "Address"
         verbose_name_plural = "Addresses"
         db_table = "addresses"
+
+
+class AuthTokenManager(models.Manager):
+    def create(self, user, expiry=knox_settings.TOKEN_TTL):
+        token = crypto.create_token_string()
+        digest = crypto.hash_token(token)
+
+        if expiry is not None:
+            expiry = timezone.now() + expiry
+
+        instance = super(AuthTokenManager, self).create(
+            token_key=token[: CONSTANTS.TOKEN_KEY_LENGTH],
+            digest=digest,
+            user=user,
+            expiry=expiry,
+        )
+        return instance, token
+
+
+class AuthToken(models.Model):
+
+    objects = AuthTokenManager()
+
+    digest = models.CharField(max_length=CONSTANTS.DIGEST_LENGTH, primary_key=True)
+    token_key = models.CharField(max_length=CONSTANTS.TOKEN_KEY_LENGTH, db_index=True)
+    user = models.ForeignKey(
+        Users,
+        null=False,
+        blank=False,
+        related_name="auth_token_set",
+        on_delete=models.CASCADE,
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    expiry = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return "%s : %s" % (self.digest, self.user)

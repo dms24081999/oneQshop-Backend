@@ -5,7 +5,7 @@ from django.contrib import admin
 
 from .forms import *
 from import_export.admin import ImportExportModelAdmin
-from .models import Addresses
+from .models import Addresses, AuthToken
 from django.contrib.auth import get_user_model
 
 Users = get_user_model()
@@ -19,3 +19,10 @@ class UsersAdmin(ImportExportModelAdmin):
 @admin.register(Addresses)
 class AddressesAdmin(ImportExportModelAdmin):
     pass
+
+
+@admin.register(AuthToken)
+class AuthTokenAdmin(admin.ModelAdmin):
+    list_display = ("digest", "user", "created")
+    fields = ()
+    raw_id_fields = ("user",)

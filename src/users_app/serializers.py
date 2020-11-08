@@ -42,6 +42,7 @@ class UsersCreateSerializer(serializers.ModelSerializer):
 class UsersSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     current_user = serializers.SerializerMethodField("curruser")
+    picture_path = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Users
@@ -54,6 +55,7 @@ class UsersSerializer(serializers.ModelSerializer):
             "phone_number",
             "current_user",
             "picture",
+            "picture_path",
         ]
 
     def curruser(self, obj):
@@ -62,3 +64,11 @@ class UsersSerializer(serializers.ModelSerializer):
             return self.context["request"].user.id
         except:
             pass
+
+    def get_picture_path(self, obj):
+        request = self.context.get("request")
+        try:
+            return obj.picture.url
+        except:
+            return None
+        # return request.build_absolute_uri(photo_url)
