@@ -30,72 +30,80 @@ class Command(BaseCommand):
             "--product_images_file", type=str, help="Product Images CSV file path."
         )
         parser.add_argument("--products_file", type=str, help="Products CSV file path.")
+        parser.add_argument("--images_path", type=str, help="Product image files path.")
 
     def handle(self, *args, **kwargs):
-        # Delete all data
-        print("Deleting Users Table")
-        Users.objects.all().delete()
-        print("Deleting Products Table")
-        Products.objects.all().delete()
-        print("Deleting ProductImages Table")
-        ProductImages.objects.all().delete()
-        print("Deleting Categories Table")
-        Categories.objects.all().delete()
+        # # Delete all data
+        # print("Deleting Users Table")
+        # Users.objects.all().delete()
+        # print("Deleting Products Table")
+        # Products.objects.all().delete()
+        # print("Deleting ProductImages Table")
+        # ProductImages.objects.all().delete()
+        # print("Deleting Categories Table")
+        # Categories.objects.all().delete()
 
-        # Admin
-        print("Creating Admin")
-        user, created = Users.objects.get_or_create(
-            username="admin", email="dms24081999@gmail.com"
-        )
-        if created:
-            user.set_password("24081999")
-            user.staff = True
-            user.admin = True
-            user.save()
+        # # Admin
+        # print("Creating Admin")
+        # user, created = Users.objects.get_or_create(
+        #     username="admin", email="dms24081999@gmail.com"
+        # )
+        # if created:
+        #     user.set_password("24081999")
+        #     user.staff = True
+        #     user.admin = True
+        #     user.save()
 
-        # Users
-        users = csv.DictReader(open(kwargs["users_file"]))
-        for row in users:
-            print("Creating User:", row["username"])
-            user, created = Users.objects.get_or_create(
-                username=row["username"], email=row["email"]
-            )
-            if created:
-                user.set_password(row["password"])
-                user.save()
+        # # Users
+        # users = csv.DictReader(open(kwargs["users_file"]))
+        # for row in users:
+        #     print("Creating User:", row["username"])
+        #     user, created = Users.objects.get_or_create(
+        #         username=row["username"],
+        #         email=row["email"],
+        #     )
+        #     if created:
+        #         user.set_password(row["password"])
+        #         user.save()
 
-        # Categories
-        categories = csv.DictReader(open(kwargs["categories_file"]))
-        for row in categories:
-            print("Creating Category:", row["name"])
-            user, created = Categories.objects.get_or_create(
-                id=row["id"], name=row["name"], short_name=row["short_name"]
-            )
+        # # Categories
+        # categories = csv.DictReader(open(kwargs["categories_file"]))
+        # for row in categories:
+        #     print("Creating Category:", row["name"])
+        #     user, created = Categories.objects.get_or_create(
+        #         id=row["id"],
+        #         name=row["name"],
+        #         short_name=row["short_name"],
+        #     )
 
-        # Product Images
-        product_images = csv.DictReader(open(kwargs["product_images_file"]))
-        basepath = "/mnt/f/Projects/BE Project/GroceryStoreDataset"
-        for row in product_images:
-            print("Creating Product Image:", row["id"])
-            f = File(open(os.path.join(basepath, row["image"]), "rb"))
-            productimage, created = ProductImages.objects.get_or_create(
-                id=row["id"], main_image=row["main_image"]
-            )
-            if created:
-                productimage.image.save(os.path.split(f.name)[1], f)
-                productimage.save()
+        # # Product Images
+        # product_images = csv.DictReader(open(kwargs["product_images_file"]))
+        # basepath = kwargs["images_path"]
+        # print(basepath)
+        # for row in product_images:
+        #     print("Creating Product Image:", row["id"], row["image"])
+        #     f = File(open(os.path.join(basepath, row["image"]), "rb"))
+        #     productimage, created = ProductImages.objects.get_or_create(
+        #         id=row["id"],
+        #         main_image=row["main_image"],
+        #     )
+        #     if created:
+        #         productimage.image.save(os.path.split(f.name)[1], f)
+        #         productimage.save()
 
         # Products
         products = csv.DictReader(open(kwargs["products_file"]))
         for row in products:
-            print("Creating Product:", row["barcode"])
+            print("Creating Product:", row["barcode"], row["name"])
             product, created = Products.objects.get_or_create(
-                barcode=row["barcode"],
-                name=row["name"],
-                short_name=row["short_name"],
-                category=Categories.objects.get(id=int(row["category"])),
+                barcode=row["barcode"], name=row["name"], short_name=row["short_name"]
             )
             if created:
+                # images: 1,2 in csv
                 product.images.add(
-                    *row["images"].split()
+                    *[int(id) for id in row["images"].split(",")]
                 )  # p.images.remove(100) # p.images.set(obj)
+                # categories: 1,2 in csv
+                product.categories.add(
+                    *[int(id) for id in row["categories"].split(",")]
+                )

@@ -18,6 +18,7 @@ class Categories(models.Model):
     description = models.CharField(
         db_column="description", max_length=255, null=False, blank=False
     )
+    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Category"
@@ -45,6 +46,7 @@ class ProductImages(models.Model):
             blank=True,
         )
     main_image = models.BooleanField(default=False, db_column="main_image")
+    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Product Image"
@@ -65,15 +67,16 @@ class Products(models.Model):
     short_name = models.SlugField(
         db_column="short_name", max_length=255, null=False, blank=False
     )
-    category = models.ForeignKey(
+    categories = models.ManyToManyField(
         Categories,
-        db_column="category",
-        on_delete=models.CASCADE,
-        related_name="products_category",
+        related_name="product_categories",
+        blank=True,
+        db_column="categories",
     )
     images = models.ManyToManyField(
         ProductImages, related_name="product_images", blank=True, db_column="images"
     )
+    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Product"
@@ -87,6 +90,7 @@ class Products(models.Model):
 class Document(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     upload = models.FileField()
+    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Document"

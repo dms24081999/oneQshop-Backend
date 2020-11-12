@@ -11,16 +11,17 @@ class Cart(models.Model):
     user_id = models.ForeignKey(
         Users,
         db_column="user_id",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="cart_user_id",
     )
     product_id = models.ForeignKey(
         Products,
         db_column="product_id",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="cart_product_id",
     )
     ratings = models.IntegerField(default=5)
+    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Cart"

@@ -41,10 +41,9 @@ urlpatterns = [
         MyTokenObtainPairView.as_view(),
         name="token_obtain_pair_custom",
     ),
-    # path('user/', include('users_app.urls')),
     path("api/users/", include("users_app.urls")),
     path("api/shops/", include("shops_app.api.urls")),
-    path("api/products/", include("products_app.api.urls")),
+    path("api/products/", include("products_app.urls")),
 ]
 
 if not settings.AWS:

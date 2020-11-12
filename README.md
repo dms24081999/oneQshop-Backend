@@ -70,9 +70,10 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py populate_db \
     --users_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/users.csv" \
-    --categories_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/categories.csv" \
-    --product_images_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/product_images.csv" \
-    --products_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/products.csv"
+    --categories_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/categoriesDf.csv" \
+    --product_images_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/productImagesDf.csv" \
+    --products_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/productsDf.csv" \
+    --images_path "/mnt/f/Projects/BE Project/style-dataset-input"
 ```
 
 ## Untrack files already added to git repository based on .gitignore
@@ -88,4 +89,5 @@ git commit -m ".gitignore fix"
 ngrok http 8000
 npm install -g localtunnel
 lt --port 8000
+lt -p 8000 -s dms24-v1
 ```

@@ -17,6 +17,7 @@ class Shops(models.Model):
     pincode = models.CharField(max_length=10, blank=True, null=True)
     state_name = models.CharField(max_length=165, blank=True, null=True)
     country_name = models.CharField(max_length=40, unique=True, blank=True)
+    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Shop"
@@ -37,6 +38,7 @@ class ShopProducts(models.Model):
         on_delete=models.CASCADE,
         related_name="shopproduct_name",
     )
+    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Shop Product"
