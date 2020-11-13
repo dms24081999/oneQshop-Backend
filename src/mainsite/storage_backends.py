@@ -20,13 +20,19 @@ class PrivateMediaStorage(S3Boto3Storage):
     custom_domain = False
 
 
-class ProfilePrictureStorage(S3Boto3Storage):
+class ProfilePictureStorage(S3Boto3Storage):
     location = settings.AWS_PUBLIC_MEDIA_LOCATION + "/profile_picture"
     default_acl = "public-read"
     file_overwrite = False
 
 
-class ProductMainPrictureStorage(S3Boto3Storage):
+class ProductMainPictureStorage(S3Boto3Storage):
     location = settings.AWS_PUBLIC_MEDIA_LOCATION + "/products/main"
+    default_acl = "public-read"
+    file_overwrite = True
+
+
+class CategoryPictureStorage(S3Boto3Storage):
+    location = settings.AWS_PUBLIC_MEDIA_LOCATION + "/categories"
     default_acl = "public-read"
     file_overwrite = True

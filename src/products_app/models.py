@@ -39,6 +39,18 @@ class Categories(models.Model):
     description = models.CharField(
         db_column="description", max_length=255, null=False, blank=False
     )
+    if not settings.AWS:
+        image = models.FileField(
+            storage=FileSystemStorage(),
+            upload_to=settings.AWS_PUBLIC_MEDIA_LOCATION + "/categories/",
+            db_column="image",
+            null=True,
+            blank=True,
+        )
+    else:
+        image = models.FileField(
+            storage=CategoryPictureStorage(), db_column="image", null=True, blank=True
+        )
     is_deleted = models.BooleanField(default=False, db_column="is_deleted")
 
     class Meta:
@@ -61,7 +73,7 @@ class ProductImages(models.Model):
         )
     else:
         image = models.FileField(
-            storage=ProductMainPrictureStorage(),
+            storage=ProductMainPictureStorage(),
             db_column="image",
             null=True,
             blank=True,

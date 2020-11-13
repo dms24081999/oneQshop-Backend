@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser
 from .managers import UserManager
-from mainsite.storage_backends import ProfilePrictureStorage
+from mainsite.storage_backends import ProfilePictureStorage
 from django.core.files.storage import FileSystemStorage
 from django.core.validators import RegexValidator
 from django.utils import timezone
@@ -57,7 +57,7 @@ class Users(AbstractBaseUser):
         )
     else:
         picture = models.FileField(
-            storage=ProfilePrictureStorage(), db_column="picture", null=True, blank=True
+            storage=ProfilePictureStorage(), db_column="picture", null=True, blank=True
         )
     active = models.BooleanField(default=True, db_column="active")
     staff = models.BooleanField(

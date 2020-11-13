@@ -16,7 +16,7 @@ class CategoriesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Categories
-        fields = ["id", "name", "description", "is_deleted"]
+        fields = ["id", "name", "description", "image", "is_deleted"]
 
 
 class ProductImagesSerializer(serializers.ModelSerializer):
@@ -59,7 +59,6 @@ class ProductsSerializer(serializers.ModelSerializer):
         return serial.data
 
     def get_categories_details(self, obj):
-        # serial = CategoriesSerializer(Categories.objects.get(id=obj.category.id))
         serial = CategoriesSerializer(
             Categories.objects.filter(id__in=obj.categories.all()), many=True
         )
