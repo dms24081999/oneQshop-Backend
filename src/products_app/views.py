@@ -12,6 +12,7 @@ from django.conf import settings
 from django.core import serializers as django_serializers
 import json
 import pandas as pd
+from mainsite.pagination import *
 
 Users = get_user_model()
 
@@ -39,6 +40,7 @@ class ProductsFullInfoAPIView(ModelViewSet):
     serializer_class = ProductsSerializer
     permission_classes = [AllowAny]
     queryset = Products.objects.all()
+    pagination_class = ProductsLimitOffsetPagination
 
     # List GET
     def get_queryset(self, *args, **kwargs):

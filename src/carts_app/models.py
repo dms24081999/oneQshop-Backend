@@ -20,8 +20,8 @@ class Cart(models.Model):
         on_delete=models.PROTECT,
         related_name="cart_product_id",
     )
-    ratings = models.IntegerField(default=5)
-    is_deleted = models.BooleanField(default=False)
+    ratings = models.IntegerField(default=5, db_column="ratings")
+    is_deleted = models.BooleanField(default=False, db_column="is_deleted")
 
     class Meta:
         verbose_name = "Cart"

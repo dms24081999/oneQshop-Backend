@@ -67,7 +67,7 @@ class Users(AbstractBaseUser):
     all_logout = models.CharField(
         max_length=20, default="", null=True, blank=True, db_column="all_logout"
     )
-    is_deleted = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False, db_column="is_deleted")
     # notice the absence of a "Password field", that is built in.
 
     USERNAME_FIELD = "username"

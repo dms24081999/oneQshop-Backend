@@ -8,6 +8,27 @@ from django.contrib.auth import get_user_model
 Users = get_user_model()
 
 
+class Brands(models.Model):
+    name = models.CharField(
+        db_column="name", max_length=255, unique=True, null=False, blank=False
+    )
+    short_name = models.SlugField(
+        db_column="short_name", max_length=255, null=False, blank=False
+    )
+    description = models.CharField(
+        db_column="description", max_length=255, null=False, blank=False
+    )
+    is_deleted = models.BooleanField(default=False, db_column="is_deleted")
+
+    class Meta:
+        verbose_name = "Brand"
+        verbose_name_plural = "Brands"
+        db_table = "brands"
+
+    def __str__(self):
+        return "(" + str(self.pk) + ") " + self.name
+
+
 class Categories(models.Model):
     name = models.CharField(
         db_column="name", max_length=255, unique=True, null=False, blank=False
@@ -18,7 +39,7 @@ class Categories(models.Model):
     description = models.CharField(
         db_column="description", max_length=255, null=False, blank=False
     )
-    is_deleted = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False, db_column="is_deleted")
 
     class Meta:
         verbose_name = "Category"
@@ -26,7 +47,7 @@ class Categories(models.Model):
         db_table = "categories"
 
     def __str__(self):
-        return self.name
+        return "(" + str(self.pk) + ") " + self.name
 
 
 class ProductImages(models.Model):
@@ -46,7 +67,7 @@ class ProductImages(models.Model):
             blank=True,
         )
     main_image = models.BooleanField(default=False, db_column="main_image")
-    is_deleted = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False, db_column="is_deleted")
 
     class Meta:
         verbose_name = "Product Image"
@@ -54,7 +75,7 @@ class ProductImages(models.Model):
         db_table = "product_images"
 
     def __str__(self):
-        return self.image.name
+        return "(" + str(self.pk) + ") " + self.image.name
 
 
 class Products(models.Model):
@@ -73,10 +94,19 @@ class Products(models.Model):
         blank=True,
         db_column="categories",
     )
+    brand = models.ForeignKey(
+        Brands,
+        db_column="brand",
+        on_delete=models.PROTECT,
+        related_name="product_brand",
+        blank=True,
+        null=True,
+    )
     images = models.ManyToManyField(
         ProductImages, related_name="product_images", blank=True, db_column="images"
     )
-    is_deleted = models.BooleanField(default=False)
+    price = models.FloatField(null=False, blank=False, default=0.0, db_column="price")
+    is_deleted = models.BooleanField(default=False, db_column="is_deleted")
 
     class Meta:
         verbose_name = "Product"

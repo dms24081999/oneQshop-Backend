@@ -22,6 +22,11 @@ from django.conf import settings
 from rest_framework_simplejwt import views as jwt_views
 from rest_framework.authtoken.views import obtain_auth_token  # <-- Here
 from .authentication import MyTokenObtainPairView
+from django.contrib import admin
+
+admin.site.site_header = "one-Q-shop Admin"
+admin.site.site_title = "one-Q-shop Admin Portal"
+admin.site.index_title = "Welcome to one-Q-shop Portal"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -42,7 +47,6 @@ urlpatterns = [
         name="token_obtain_pair_custom",
     ),
     path("api/users/", include("users_app.urls")),
-    path("api/shops/", include("shops_app.api.urls")),
     path("api/products/", include("products_app.urls")),
 ]
 
