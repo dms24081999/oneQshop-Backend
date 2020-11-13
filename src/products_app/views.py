@@ -46,12 +46,15 @@ class ProductsFullInfoAPIView(ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         context = super(ProductsFullInfoAPIView, self).get_queryset(*args, **kwargs)
         qs = self.queryset
-        query = self.request.GET.get("s")
-        if query is not None:
+        searchQuery = self.request.GET.get("s")
+        categoryQuery = self.request.GET.get("category")
+        if categoryQuery is not None:
+            qs = qs.filter(categories__id=int(categoryQuery))
+        if searchQuery is not None:
             qs = qs.filter(
-                Q(name__icontains=query)
-                | Q(short_name__icontains=query)
-                | Q(barcode__icontains=query)
+                Q(name__icontains=searchQuery)
+                | Q(short_name__icontains=searchQuery)
+                | Q(barcode__icontains=searchQuery)
             ).distinct()
         return qs
 
@@ -102,7 +105,6 @@ class CategoriesFullInfoAPIView(ModelViewSet):
     permission_classes = [AllowAny]
     queryset = Categories.objects.all()
 
-    # List GET
     def get_queryset(self, *args, **kwargs):
         context = super(CategoriesFullInfoAPIView, self).get_queryset(*args, **kwargs)
         qs = self.queryset
@@ -114,6 +116,13 @@ class CategoriesFullInfoAPIView(ModelViewSet):
                 | Q(description__icontains=query)
             ).distinct()
         return qs
+
+    # List GET
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        response = {"count": len(serializer.data), "results": serializer.data}
+        return Response(response)
 
     # GET
     def retrieve(self, request, pk, *args, **kwargs):
