@@ -16,7 +16,7 @@ class Brands(models.Model):
         db_column="short_name", max_length=255, null=False, blank=False
     )
     description = models.CharField(
-        db_column="description", max_length=255, null=False, blank=False
+        db_column="description", max_length=255, null=True, blank=True
     )
     is_deleted = models.BooleanField(default=False, db_column="is_deleted")
 
@@ -37,7 +37,7 @@ class Categories(models.Model):
         db_column="short_name", max_length=255, null=False, blank=False
     )
     description = models.CharField(
-        db_column="description", max_length=255, null=False, blank=False
+        db_column="description", max_length=255, null=True, blank=True
     )
     if not settings.AWS:
         image = models.FileField(

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.sessions.models import Session
 
 # Register your models here.
 
@@ -22,12 +23,20 @@ class AddressesAdmin(ImportExportModelAdmin):
 
 
 @admin.register(AuthToken)
-class AuthTokenAdmin(admin.ModelAdmin):
+class AuthTokenAdmin(ImportExportModelAdmin):
     list_display = ("digest", "user", "created")
     fields = ()
     raw_id_fields = ("user",)
 
 
 @admin.register(ResetPasswordToken)
-class ResetPasswordTokenAdmin(admin.ModelAdmin):
+class ResetPasswordTokenAdmin(ImportExportModelAdmin):
     list_display = ("user", "key", "created_at", "ip_address", "user_agent")
+
+
+@admin.register(Session)
+class SessionAdmin(ImportExportModelAdmin):
+    def _session_data(self, obj):
+        return obj.get_decoded()
+
+    list_display = ["session_key", "_session_data", "expire_date"]
