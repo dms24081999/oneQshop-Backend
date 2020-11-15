@@ -237,7 +237,6 @@ class ProductImagesTrainingAPI(APIView):
                 if images.main_image == True:
                     products[product.id] = images.image.url
                     break
-        print(products)
         return Response(products)
 
 
@@ -248,8 +247,18 @@ class ProductNamesTrainingAPI(APIView):
         products = dict()
         for product in Products.objects.all():
             products[product.id] = product.name
-        print(products)
         return Response(products)
+
+
+class ProductBarCodesAPI(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        products = dict()
+        for product in Products.objects.all():
+            products[product.barcode] = product.id
+        response = {"count": len(products), "results": products}
+        return Response(response)
 
 
 class ProductVisualSimilarityRecommendationAPI(APIView):
