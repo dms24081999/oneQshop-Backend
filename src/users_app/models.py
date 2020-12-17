@@ -70,8 +70,8 @@ class Users(AbstractBaseUser):
     is_deleted = models.BooleanField(default=False, db_column="is_deleted")
     # notice the absence of a "Password field", that is built in.
 
-    USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["email"]  # username & Password are required by default.
+    USERNAME_FIELD = "email"  # email/username sign-in
+    # REQUIRED_FIELDS = ["email"]  # username & Password are required by default.
 
     objects = UserManager()
 
@@ -243,9 +243,8 @@ def eligible_for_reset(self):
 def password_reset_token_created(
     sender, instance, reset_password_token, *args, **kwargs
 ):
-    email_plaintext_message = "{hosted_url}{reset_password_url}?token={reset_password_token}".format(
-        hosted_url=config("HOSTED_URL"),
-        reset_password_url=reverse("reset-password-request"),
+    email_plaintext_message = "{hosted_url}?type=password_reset&token={reset_password_token}".format(
+        hosted_url=config("LANDING_PAGE_URL"),
         reset_password_token=reset_password_token.key,
     )
     send_mail(

@@ -90,5 +90,5 @@ git commit -m ".gitignore fix"
 ngrok http 8000
 npm install -g localtunnel
 lt --port 8000
-lt -p 8000 -s dms24-v6
+lt -p 8000 -s dms24-v2
 ```
