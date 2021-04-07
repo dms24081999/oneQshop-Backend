@@ -52,7 +52,7 @@ password: 24081999
 ```
 source ./setup.sh
 cd src
-python manage.py runserver
+python manage.py runserver 8000
 ```
 
 ## Reset Migrations
@@ -91,4 +91,7 @@ ngrok http 8000
 npm install -g localtunnel
 lt --port 8000
 lt -p 8000 -s dms24-v2
+haproxy -f haproxy.cfg
+wsl --shutdown
+curl -v https://dms24-v2.loca.lt
 ```
