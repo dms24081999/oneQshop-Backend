@@ -292,8 +292,8 @@ class ProductVisualSimilarityRecommendationAPI(APIView):
             recommend = self.retrieve_most_similar_products(str(pk))
             queryset = [Products.objects.get(id=id) for id in recommend]
             serializer = ProductsSerializer(queryset, many=True)
-            products_recommend = serializer.data
-        return Response(products_recommend)
+        response = {"count": len(serializer.data), "results": serializer.data}
+        return Response(response)
         ## Alternative Method
         #     products_recommend = django_serializers.serialize('json', data)
         # return Response(json.loads(products_recommend), content_type="application/json")
