@@ -1,2 +1,2 @@
 source ./unix-env3.8/bin/activate
-source ./.bashrc
+export GPG_TTY=$(tty)
