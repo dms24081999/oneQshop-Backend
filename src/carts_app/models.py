@@ -7,7 +7,7 @@ Users = get_user_model()
 # Create your models here.
 
 
-class Cart(models.Model):
+class Carts(models.Model):
     user_id = models.ForeignKey(
         Users,
         db_column="user_id",

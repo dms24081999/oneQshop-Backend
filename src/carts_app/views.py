@@ -26,14 +26,14 @@ from rest_framework.views import APIView
 # Create your views here.
 
 
-class CartFullInfoAPIView(ModelViewSet):
+class CartsFullInfoAPIView(ModelViewSet):
     lookup_field = "pk"
-    serializer_class = CartSerializer
+    serializer_class = CartsSerializer
     permission_classes = [IsAuthenticated]
-    queryset = Cart.objects.all()
+    queryset = Carts.objects.all()
 
     def get_queryset(self, *args, **kwargs):
-        context = super(CartFullInfoAPIView, self).get_queryset(*args, **kwargs)
+        context = super(CartsFullInfoAPIView, self).get_queryset(*args, **kwargs)
         qs = self.queryset
         query = self.request.GET.get("s")
         if query is not None:

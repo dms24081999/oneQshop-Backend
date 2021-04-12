@@ -2,9 +2,9 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
-from .models import Cart
+from .models import Carts
 
 
-@admin.register(Cart)
+@admin.register(Carts)
 class CartsAdmin(ImportExportModelAdmin):
     pass

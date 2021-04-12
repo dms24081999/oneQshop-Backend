@@ -38,9 +38,14 @@ class MyUploadView(APIView):
 class ProductsFullInfoAPIView(ModelViewSet):
     lookup_field = "pk"
     serializer_class = ProductsSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     queryset = Products.objects.all()
     pagination_class = ProductsLimitOffsetPagination
+
+    def get_serializer_context(self):
+        context = super(ProductsFullInfoAPIView, self).get_serializer_context()
+        context.update({"request": self.request})
+        return context
 
     # List GET
     def get_queryset(self, *args, **kwargs):

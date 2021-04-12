@@ -3,9 +3,9 @@ from .models import *
 import json
 
 
-class CartSerializer(serializers.ModelSerializer):
+class CartsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
 
     class Meta:
-        model = Cart
+        model = Carts
         fields = ["id", "user_id", "product_id", "count", "ratings", "is_deleted"]
