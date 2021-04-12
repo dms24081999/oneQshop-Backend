@@ -9,6 +9,7 @@ router = routers.DefaultRouter()
 router.register(r"product", ProductsFullInfoAPIView)
 router.register(r"image", ProductImagesFullInfoAPIView)
 router.register(r"category", CategoriesFullInfoAPIView)
+router.register(r"cart", CartsFullInfoAPIView)
 
 # ImagesTrainingAPI
 urlpatterns = [

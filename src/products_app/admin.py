@@ -28,3 +28,8 @@ class BrandsAdmin(ImportExportModelAdmin):
 @admin.register(Document)
 class ProductsAdmin(ImportExportModelAdmin):
     pass
+
+
+@admin.register(Carts)
+class CartsAdmin(ImportExportModelAdmin):
+    pass

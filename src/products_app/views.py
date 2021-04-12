@@ -296,7 +296,9 @@ class ProductVisualSimilarityRecommendationAPI(APIView):
         if str(pk) in self.ids:
             recommend = self.retrieve_most_similar_products(str(pk))
             queryset = [Products.objects.get(id=id) for id in recommend]
-            serializer = ProductsSerializer(queryset, many=True)
+            serializer = ProductsSerializer(
+                queryset, context={"request": request}, many=True
+            )
         response = {"count": len(serializer.data), "results": serializer.data}
         return Response(response)
         ## Alternative Method
@@ -414,3 +416,75 @@ class ItemBasedCollaborativeFilteringRecommendationAPI(APIView):
         serializer = ProductsSerializer(queryset, many=True)
         products_recommend = serializer.data
         return Response(products_recommend)
+
+
+class CartsFullInfoAPIView(ModelViewSet):
+    lookup_field = "pk"
+    serializer_class = CartsSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Carts.objects.all()
+
+    def get_serializer_context(self):
+        context = super(CartsFullInfoAPIView, self).get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
+    def get_queryset(self, *args, **kwargs):
+        context = super(CartsFullInfoAPIView, self).get_queryset(*args, **kwargs)
+        qs = self.queryset
+        query = self.request.GET.get("s")
+        if query is not None:
+            qs = qs.filter(
+                Q(name__icontains=query)
+                | Q(short_name__icontains=query)
+                | Q(description__icontains=query)
+            ).distinct()
+        return qs
+
+    # List GET
+    def list(self, request):
+        queryset = self.get_queryset()
+        queryset = queryset.filter(user_id=request.user.id)
+        serializer = self.get_serializer(queryset, many=True)
+        response = {"count": len(serializer.data), "results": serializer.data}
+        return Response(response)
+
+    # GET
+    def retrieve(self, request, pk, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    # PUT
+    def update(self, request, pk, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Auth not provided."}, status=400)
+        else:
+            partial = kwargs.pop("partial", False)
+            instance = self.get_object()
+            serializer = self.get_serializer(
+                instance, data=request.data, partial=partial
+            )
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response(serializer.data)
+
+    # PATCH
+    def partial_update(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Auth not provided."}, status=400)
+        else:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response(serializer.data)
+
+    # DELETE
+    def destroy(self, request, pk, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Auth not provided."}, status=400)
+        else:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)

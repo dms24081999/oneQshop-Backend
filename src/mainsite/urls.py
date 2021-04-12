@@ -48,7 +48,6 @@ urlpatterns = [
     ),
     path("api/users/", include("users_app.urls")),
     path("api/products/", include("products_app.urls")),
-    path("api/carts/", include("carts_app.urls")),
 ]
 
 if not settings.AWS:

@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import *
-from carts_app.models import Carts
 import json
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -40,6 +39,7 @@ class ProductsSerializer(serializers.ModelSerializer):
     brand_details = serializers.SerializerMethodField(
         "get_brand_details", read_only=True
     )
+    cart_details = serializers.SerializerMethodField("get_cart_details", read_only=True)
 
     class Meta:
         model = Products
@@ -51,6 +51,7 @@ class ProductsSerializer(serializers.ModelSerializer):
             "brand_details",
             "images_details",
             "price",
+            "cart_details",
             "is_deleted",
         ]
 
@@ -72,6 +73,63 @@ class ProductsSerializer(serializers.ModelSerializer):
             return serial.data
         else:
             return None
+
+    def get_cart_details(self, obj):
+        try:
+            serial = CartsMiniSerializer(
+                Carts.objects.get(
+                    user_id=self.context["request"].user.id, product_id=obj.id
+                )
+            )
+            return serial.data
+        except ObjectDoesNotExist:
+            return []
+
+
+class CartsMiniSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Carts
+        fields = ["id", "count", "ratings", "is_deleted"]
+
+
+class CartsSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    cart_details = serializers.SerializerMethodField("get_cart_details", read_only=True)
+
+    class Meta:
+        model = Carts
+        fields = [
+            "id",
+            "cart_details",
+            "user_id",
+            "product_id",
+            "count",
+            "ratings",
+            "is_deleted",
+        ]
+
+    def create(self, validated_data):
+        user_id = validated_data.get("user_id", None)
+        product_id = validated_data.get("product_id", None)
+        if user_id is not None:
+            data = Carts.objects.get(user_id=user_id, product_id=product_id)
+            if data is not None:
+                data.count = validated_data.get("count", data.count)
+                data.save()
+                return data
+        data = Carts.objects.create(**validated_data)
+        return data
+
+    def get_cart_details(self, obj):
+        try:
+            serial = ProductsSerializer(
+                Products.objects.get(id=obj.product_id.id), context=self.context
+            )
+            return serial.data
+        except ObjectDoesNotExist:
+            return []
 
 
 class FileSerializer(serializers.ModelSerializer):
