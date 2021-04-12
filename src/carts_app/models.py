@@ -20,6 +20,7 @@ class Cart(models.Model):
         on_delete=models.PROTECT,
         related_name="cart_product_id",
     )
+    count = models.IntegerField(default=0, db_column="count")
     ratings = models.IntegerField(default=5, db_column="ratings")
     is_deleted = models.BooleanField(default=False, db_column="is_deleted")
 
