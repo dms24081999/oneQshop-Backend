@@ -47,7 +47,7 @@ class CartsFullInfoAPIView(ModelViewSet):
     # List GET
     def list(self, request):
         queryset = self.get_queryset()
-        queryset = queryset.filter(user_id=request.user.id).distinct()
+        queryset = queryset.filter(user_id=request.user.id)
         serializer = self.get_serializer(queryset, many=True)
         response = {"count": len(serializer.data), "results": serializer.data}
         return Response(response)

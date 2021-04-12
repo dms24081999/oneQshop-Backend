@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import *
 from carts_app.models import Carts
-from carts_app.serializers import CartsSerializer
 import json
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -41,7 +40,6 @@ class ProductsSerializer(serializers.ModelSerializer):
     brand_details = serializers.SerializerMethodField(
         "get_brand_details", read_only=True
     )
-    cart_details = serializers.SerializerMethodField("get_cart_details", read_only=True)
 
     class Meta:
         model = Products
@@ -53,7 +51,6 @@ class ProductsSerializer(serializers.ModelSerializer):
             "brand_details",
             "images_details",
             "price",
-            "cart_details",
             "is_deleted",
         ]
 
@@ -75,18 +72,6 @@ class ProductsSerializer(serializers.ModelSerializer):
             return serial.data
         else:
             return None
-
-    def get_cart_details(self, obj):
-
-        try:
-            serial = CartsSerializer(
-                Carts.objects.get(
-                    user_id=self.context["request"].user.id, product_id=obj.id
-                )
-            )
-            return serial.data
-        except ObjectDoesNotExist:
-            return []
 
 
 class FileSerializer(serializers.ModelSerializer):
