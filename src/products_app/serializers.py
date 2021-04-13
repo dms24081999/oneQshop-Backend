@@ -51,6 +51,7 @@ class ProductsSerializer(serializers.ModelSerializer):
             "brand_details",
             "images_details",
             "price",
+            "count",
             "cart_details",
             "is_deleted",
         ]
@@ -83,7 +84,7 @@ class ProductsSerializer(serializers.ModelSerializer):
             )
             return serial.data
         except ObjectDoesNotExist:
-            return []
+            return None
 
 
 class CartsMiniSerializer(serializers.ModelSerializer):
@@ -111,16 +112,30 @@ class CartsSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        user_id = validated_data.get("user_id", None)
         product_id = validated_data.get("product_id", None)
-        if user_id is not None:
-            data = Carts.objects.get(user_id=user_id, product_id=product_id)
-            if data is not None:
-                data.count = validated_data.get("count", data.count)
-                data.save()
-                return data
-        data = Carts.objects.create(**validated_data)
-        return data
+        count = validated_data.get("count", 1)
+        user_id = validated_data.get("user_id", None)
+        cart = Carts.objects.filter(user_id=user_id, product_id=product_id).first()
+        product = Products.objects.get(id=product_id.id)
+        if cart is not None and product is not None:
+            product_count = (product.count + cart.count) - count
+            if product_count < 0:
+                return cart
+            else:
+                cart.count = count
+                cart.save()
+                product.count = product_count
+                product.save()
+                return cart
+        else:
+            product_count = product.count - count
+            if product_count < 0:
+                return cart
+            else:
+                cart = Carts.objects.create(**validated_data)
+                product.count = product_count
+                product.save()
+                return cart
 
     def get_cart_details(self, obj):
         try:

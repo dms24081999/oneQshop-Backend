@@ -486,5 +486,8 @@ class CartsFullInfoAPIView(ModelViewSet):
             return Response({"detail": "Auth not provided."}, status=400)
         else:
             instance = self.get_object()
+            product = Products.objects.get(id=instance.product_id.id)
+            product.count = product.count + instance.count
+            product.save()
             self.perform_destroy(instance)
             return Response(status=status.HTTP_204_NO_CONTENT)
