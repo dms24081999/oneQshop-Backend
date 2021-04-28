@@ -131,6 +131,7 @@ class Products(models.Model):
 
 
 class Carts(models.Model):
+    cart_history_id = models.IntegerField(default=0, db_column="cart_history_id")
     user_id = models.ForeignKey(
         Users,
         db_column="user_id",

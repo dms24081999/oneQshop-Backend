@@ -13,6 +13,7 @@ from django.core import serializers as django_serializers
 import json
 import pandas as pd
 from mainsite.pagination import *
+from django.db.models import Sum
 
 Users = get_user_model()
 
@@ -455,8 +456,15 @@ class CartsFullInfoAPIView(ModelViewSet):
     def list(self, request):
         queryset = self.get_queryset()
         queryset = queryset.filter(user_id=request.user.id)
+        price = 0
+        for cart in queryset:
+            price = price + (Products.objects.get(id=cart.id).price * cart.count)
         serializer = self.get_serializer(queryset, many=True)
-        response = {"count": len(serializer.data), "results": serializer.data}
+        response = {
+            "count": len(serializer.data),
+            "price": price,
+            "results": serializer.data,
+        }
         return Response(response)
 
     # GET
