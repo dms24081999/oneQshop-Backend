@@ -130,7 +130,7 @@ class CartsSerializer(serializers.ModelSerializer):
         else:
             product_count = product.count - count
             if product_count < 0:
-                return cart
+                return cart  # CHECK LOGIC, it returns none
             else:
                 cart = Carts.objects.create(**validated_data)
                 product.count = product_count

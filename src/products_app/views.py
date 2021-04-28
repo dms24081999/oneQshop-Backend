@@ -245,6 +245,16 @@ class ProductImagesTrainingAPI(APIView):
         return Response(products)
 
 
+class GetCartCountAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        count = 0
+        for cart in Carts.objects.filter(user_id=request.user.id):
+            count = count + cart.count
+        return Response({"count": count})
+
+
 class ProductNamesTrainingAPI(APIView):
     permission_classes = [AllowAny]
 
@@ -486,8 +496,9 @@ class CartsFullInfoAPIView(ModelViewSet):
             return Response({"detail": "Auth not provided."}, status=400)
         else:
             instance = self.get_object()
+            serializer = self.get_serializer(instance)
             product = Products.objects.get(id=instance.product_id.id)
             product.count = product.count + instance.count
             product.save()
             self.perform_destroy(instance)
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
