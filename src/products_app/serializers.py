@@ -147,7 +147,13 @@ class CartsSerializer(serializers.ModelSerializer):
             return []
 
 
-class FileSerializer(serializers.ModelSerializer):
+class InvoicesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Document
+        model = Invoices
         fields = "__all__"
+
+
+# class FileSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Document
+#         fields = "__all__"

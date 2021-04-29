@@ -25,7 +25,7 @@ class BrandsAdmin(ImportExportModelAdmin):
     pass
 
 
-@admin.register(Document)
+@admin.register(Invoices)
 class ProductsAdmin(ImportExportModelAdmin):
     pass
 

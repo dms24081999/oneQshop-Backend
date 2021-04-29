@@ -157,16 +157,48 @@ class Carts(models.Model):
         return str(self.user_id) + " | " + str(self.product_id)
 
 
-class Document(models.Model):
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    upload = models.FileField()
-    is_deleted = models.BooleanField(default=False)
+class Invoices(models.Model):
+    if not settings.AWS:
+        pdf_file = models.FileField(
+            storage=FileSystemStorage(),
+            upload_to=settings.AWS_PUBLIC_MEDIA_LOCATION + "/invoice/",
+            db_column="pdf_file",
+            null=True,
+            blank=True,
+        )
+    else:
+        pdf_file = models.FileField(
+            storage=ProductMainPictureStorage(),
+            db_column="pdf_file",
+            null=True,
+            blank=True,
+        )
+    user_id = models.ForeignKey(
+        Users,
+        db_column="user_id",
+        on_delete=models.PROTECT,
+        related_name="invoice_user_id",
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True, db_column="uploaded_at")
+    is_deleted = models.BooleanField(default=False, db_column="is_deleted")
 
     class Meta:
-        verbose_name = "Document"
-        verbose_name_plural = "Documents"
-        db_table = "documents"
+        verbose_name = "Invoice"
+        verbose_name_plural = "Invoices"
+        db_table = "invoices"
 
+    def __str__(self):
+        return "(" + str(self.pk) + ") " + self.pdf_file.name
+
+
+# class Document(models.Model):
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
+#     upload = models.FileField()
+#     is_deleted = models.BooleanField(default=False)
+#     class Meta:
+#         verbose_name = "Document"
+#         verbose_name_plural = "Documents"
+#         db_table = "documents"
 
 # class PrivateDocument(models.Model):
 #     uploaded_at = models.DateTimeField(auto_now_add=True)
