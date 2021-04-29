@@ -115,7 +115,9 @@ class CartsSerializer(serializers.ModelSerializer):
         product_id = validated_data.get("product_id", None)
         count = validated_data.get("count", 1)
         user_id = validated_data.get("user_id", None)
-        cart = Carts.objects.filter(user_id=user_id, product_id=product_id).first()
+        cart = Carts.objects.filter(
+            user_id=user_id, product_id=product_id, is_deleted=False
+        ).first()
         product = Products.objects.get(id=product_id.id)
         if cart is not None and product is not None:
             product_count = (product.count + cart.count) - count
@@ -148,9 +150,19 @@ class CartsSerializer(serializers.ModelSerializer):
 
 
 class InvoicesSerializer(serializers.ModelSerializer):
+    pdf_file_name = serializers.SerializerMethodField(
+        "get_pdf_file_name", read_only=True
+    )
+
     class Meta:
         model = Invoices
-        fields = "__all__"
+        fields = ["pdf_file", "user_id", "uploaded_at", "is_deleted", "pdf_file_name"]
+
+    def get_pdf_file_name(self, obj):
+        path = obj.pdf_file.url
+        firstpos = path.rfind("/")
+        lastpos = len(path)
+        return path[firstpos + 1 : lastpos]
 
 
 # class FileSerializer(serializers.ModelSerializer):

@@ -455,7 +455,7 @@ class CartsFullInfoAPIView(ModelViewSet):
     # List GET
     def list(self, request):
         queryset = self.get_queryset()
-        queryset = queryset.filter(user_id=request.user.id)
+        queryset = queryset.filter(user_id=request.user.id, is_deleted=False)
         price = 0
         for cart in queryset:
             price = price + (Products.objects.get(id=cart.id).price * cart.count)
@@ -512,10 +512,18 @@ class CartsFullInfoAPIView(ModelViewSet):
             return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
 
 
+class CartsPaidAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        Carts.objects.filter(user_id=request.user.id).update(is_deleted=True)
+        return Response({"status": "OK"}, status=status.HTTP_204_NO_CONTENT)
+
+
 class InvoicesFullInfoAPIView(ModelViewSet):
     lookup_field = "pk"
     serializer_class = InvoicesSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     queryset = Invoices.objects.all()
 
     # List GET

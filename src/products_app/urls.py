@@ -28,5 +28,6 @@ urlpatterns = [
     ),
     path("uploadtest/", MyUploadView.as_view()),
     path("count/cart/", GetCartCountAPI.as_view()),
+    path("paid/cart/", CartsPaidAPIView.as_view()),
     path("", include(router.urls)),
 ]
