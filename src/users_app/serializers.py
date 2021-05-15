@@ -9,6 +9,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404 as _get_object_or_404
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import password_validation
 
 from .models import get_password_reset_token_expiry_time
 from . import models
@@ -23,6 +24,10 @@ class ChangePasswordSerializer(serializers.Serializer):
     """
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+
+    def validate_new_password(self, value):
+        password_validation.validate_password(value, self.instance)
+        return value
 
 
 class UsersCreateSerializer(serializers.ModelSerializer):
@@ -42,6 +47,10 @@ class UsersCreateSerializer(serializers.ModelSerializer):
             "is_deleted",
         ]
         extra_kwargs = {"password": {"write_only": True}}
+
+    def validate_password(self, value):
+        password_validation.validate_password(value, self.instance)
+        return value
 
     def create(self, validated_data):
         password = validated_data.pop("password")
