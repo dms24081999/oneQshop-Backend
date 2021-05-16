@@ -61,7 +61,6 @@ class LoginView(APIView):
         return DateTimeField(format=datetime_format).to_representation(expiry)
 
     def get_post_response_data(self, request, token, instance):
-
         data = {"expiry": self.format_expiry_datetime(instance.expiry), "token": token}
         data["user"] = UsersSerializer(request.user, context=self.get_context()).data
         return data

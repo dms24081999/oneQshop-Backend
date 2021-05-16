@@ -90,7 +90,7 @@ git commit -m ".gitignore fix"
 ngrok http 8000
 npm install -g localtunnel
 lt --port 8000
-lt -p 8000 -s dms24-v2
+lt -p 8000 -s dms24-v4
 haproxy -f haproxy.cfg
 wsl --shutdown
 curl -v https://dms24-v2.loca.lt

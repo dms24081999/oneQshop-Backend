@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import *
-import json
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -79,7 +78,9 @@ class ProductsSerializer(serializers.ModelSerializer):
         try:
             serial = CartsMiniSerializer(
                 Carts.objects.get(
-                    user_id=self.context["request"].user.id, product_id=obj.id
+                    user_id=self.context["request"].user.id,
+                    product_id=obj.id,
+                    is_deleted=False,
                 )
             )
             return serial.data

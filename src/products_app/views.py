@@ -6,22 +6,15 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.conf import settings
-from django.core import serializers as django_serializers
-import json
 import pandas as pd
 from mainsite.pagination import *
-from django.db.models import Sum
-
-Users = get_user_model()
-
-
-from rest_framework.exceptions import ParseError
-from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+
+Users = get_user_model()
 
 
 class MyUploadView(APIView):
@@ -312,9 +305,6 @@ class ProductVisualSimilarityRecommendationAPI(APIView):
             )
         response = {"count": len(serializer.data), "results": serializer.data}
         return Response(response)
-        ## Alternative Method
-        #     products_recommend = django_serializers.serialize('json', data)
-        # return Response(json.loads(products_recommend), content_type="application/json")
 
 
 class ProductNameSimilarityRecommendationAPI(APIView):

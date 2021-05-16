@@ -127,10 +127,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         # "rest_framework.authentication.BasicAuthentication",
         # "rest_framework.authentication.SessionAuthentication",
-        # "rest_framework.authentication.TokenAuthentication",
-        "users_app.auth.TokenAuthentication",
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # "mainsite.auth_backend.MyBackend",
+        "users_app.auth.TokenAuthentication"
     ],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
 }
