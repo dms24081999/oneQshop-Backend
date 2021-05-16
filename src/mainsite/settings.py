@@ -88,12 +88,36 @@ WSGI_APPLICATION = "mainsite.wsgi.application"
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
+    # "sqlite": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    # },
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASS"),
+        "HOST": config(
+            "DB_HOST"
+        ),  # computer IP to connect Windows SQL to WSL root@DESKTOP-DELTA24 add to Server->Users
+        "PORT": config("DB_PORT"),
     }
 }
 
+"""
+In order to achieve that, do the following steps in order :
+1. python manage.py dumpdata > db.json
+2. sudo apt-get update
+    sudo apt-get install python3-dev default-libmysqlclient-dev build-essential
+    pip install mysqlclient
+3. Change the database settings to new database such as of MySQL / PostgreSQL.
+4. python manage.py migrate
+5. python manage.py shell
+    Enter the following in the shell
+    from django.contrib.contenttypes.models import ContentType
+    ContentType.objects.all().delete()
+6. python manage.py loaddata db.json
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

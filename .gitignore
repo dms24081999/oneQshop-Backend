@@ -15,3 +15,7 @@ migrations/
 
 # Database
 *.sqlite3
+
+# .ENV file
+.env
+src/.env
