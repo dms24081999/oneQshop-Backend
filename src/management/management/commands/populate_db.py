@@ -8,8 +8,7 @@ from django.core.files import File
 from django.contrib.auth import get_user_model
 
 Users = get_user_model()
-from products_app.models import ProductImages, Products, Categories, Brands
-from carts_app.models import Cart
+from products_app.models import ProductImages, Products, Categories, Brands, Carts
 from django.db import connection
 
 """
@@ -51,43 +50,43 @@ class Command(BaseCommand):
         Brands.objects.all().delete()
 
         # delete sqlite sequence count
-        cursor = connection.cursor()
-        cursor.execute(
-            "delete from sqlite_sequence where name='{}'".format(
-                Users.objects.model._meta.db_table
-            )
-        )
-        cursor.execute(
-            "delete from sqlite_sequence where name='{}'".format(
-                Products.objects.model._meta.db_table
-            )
-        )
-        cursor.execute(
-            "delete from sqlite_sequence where name='{}'".format(
-                ProductImages.objects.model._meta.db_table
-            )
-        )
-        cursor.execute(
-            "delete from sqlite_sequence where name='{}'".format(
-                Categories.objects.model._meta.db_table
-            )
-        )
-        cursor.execute(
-            "delete from sqlite_sequence where name='{}'".format(
-                Brands.objects.model._meta.db_table
-            )
-        )
-        cursor.execute(
-            "delete from sqlite_sequence where name='{}'".format("products_images")
-        )
-        cursor.execute(
-            "delete from sqlite_sequence where name='{}'".format("products_categories")
-        )
-        cursor.execute(
-            "delete from sqlite_sequence where name='{}'".format(
-                Cart.objects.model._meta.db_table
-            )
-        )
+        # cursor = connection.cursor()
+        # cursor.execute(
+        #     "delete from sqlite_sequence where name='{}'".format(
+        #         Users.objects.model._meta.db_table
+        #     )
+        # )
+        # cursor.execute(
+        #     "delete from sqlite_sequence where name='{}'".format(
+        #         Products.objects.model._meta.db_table
+        #     )
+        # )
+        # cursor.execute(
+        #     "delete from sqlite_sequence where name='{}'".format(
+        #         ProductImages.objects.model._meta.db_table
+        #     )
+        # )
+        # cursor.execute(
+        #     "delete from sqlite_sequence where name='{}'".format(
+        #         Categories.objects.model._meta.db_table
+        #     )
+        # )
+        # cursor.execute(
+        #     "delete from sqlite_sequence where name='{}'".format(
+        #         Brands.objects.model._meta.db_table
+        #     )
+        # )
+        # cursor.execute(
+        #     "delete from sqlite_sequence where name='{}'".format("products_images")
+        # )
+        # cursor.execute(
+        #     "delete from sqlite_sequence where name='{}'".format("products_categories")
+        # )
+        # cursor.execute(
+        #     "delete from sqlite_sequence where name='{}'".format(
+        #         Carts.objects.model._meta.db_table
+        #     )
+        # )
 
         # Admin
         print("Creating Admin")
@@ -153,6 +152,8 @@ class Command(BaseCommand):
                 name=row["name"],
                 short_name=row["short_name"],
                 brand=Brands.objects.get(id=int(row["brand"])),
+                price=5.0,
+                count=15,
             )
             if created:
                 # images: 1,2 in csv

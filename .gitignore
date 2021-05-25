@@ -1,5 +1,6 @@
 # Virtual Environments
 unix-env3.8/
+unix-env/
 env3.8/
 env/
 
@@ -19,3 +20,4 @@ migrations/
 # .ENV file
 .env
 src/.env
+oneqshop-v1-ssh.pem

@@ -20,9 +20,8 @@ sudo apt install python3-virtualenv python3-pip
 
 ## Create Virtual Environment:
 ```
-virtualenv -p python3.8 unix-env3.8
-source ./unix-env3.8/bin/activate
-source ./.bashrc
+virtualenv -p python3.8 unix-env
+source ./unix-env/bin/activate
 ```
 
 ## Install requirements:
@@ -57,6 +56,7 @@ python manage.py runserver 8000
 
 ## Reset Migrations
 ```
+cd src
 find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
 find . -path "*/migrations/*.pyc"  -delete
 ```
@@ -69,12 +69,12 @@ find . -path "*/migrations/*.pyc"  -delete
 python manage.py makemigrations
 python manage.py migrate
 python manage.py populate_db \
-    --users_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/users.csv" \
-    --categories_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/categoriesDf.csv" \
-    --brands_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/brandsDf.csv" \
-    --product_images_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/productImagesDf.csv" \
-    --products_file "/mnt/f/Projects/BE Project/main-backend/src/management/csv/productsDf.csv" \
-    --images_path "/mnt/f/Projects/BE Project/data/output"
+    --users_file "/mnt/d/Projects/BE Project/main-backend/src/management/csv/users.csv" \
+    --categories_file "/mnt/d/Projects/BE Project/main-backend/src/management/csv/categoriesDf.csv" \
+    --brands_file "/mnt/d/Projects/BE Project/main-backend/src/management/csv/brandsDf.csv" \
+    --product_images_file "/mnt/d/Projects/BE Project/main-backend/src/management/csv/productImagesDf.csv" \
+    --products_file "/mnt/d/Projects/BE Project/main-backend/src/management/csv/productsDf.csv" \
+    --images_path "/mnt/d/Projects/BE Project/data/final-dataset"
 ```
 
 ## Untrack files already added to git repository based on .gitignore
@@ -94,4 +94,9 @@ lt -p 8000 -s dms24-v4
 haproxy -f haproxy.cfg
 wsl --shutdown
 curl -v https://dms24-v2.loca.lt
+python manage.py collectstatic --noinput
+mysql -h oneqshopv0.cwq0bdxwtzyi.ap-south-1.rds.amazonaws.com -P 3306 -u dms24081999 -p
+
+sudo docker build -t dms24081999/oneqshop-v1 .
+sudo docker run -itd -p 8080:8888 dms24081999/oneqshop-v1
 ```

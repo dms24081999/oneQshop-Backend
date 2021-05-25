@@ -93,7 +93,7 @@ DATABASES = {
     #     "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     # },
     "default": {
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": "django.db.backends.mysql",  # postgresql
         "NAME": config("DB_NAME"),
         "USER": config("DB_USER"),
         "PASSWORD": config("DB_PASS"),
@@ -205,9 +205,9 @@ if AWS:
     )  # ?AWSAccessKeyId=AKIAX5GVYLUQZR4HIMXD after url
 else:
     STATIC_URL = "/staticfiles/"
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+    STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, "..", "staticfiles"))
     MEDIA_URL = "/mediafiles/"
-    MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
+    MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, "..", "mediafiles"))
     DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 
