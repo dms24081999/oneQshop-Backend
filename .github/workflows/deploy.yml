@@ -12,6 +12,23 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v1
 
+    - name: Setup python environment # setting python environment to 3.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.6' # if you want multiple python version run just use matrix strategy in job config. See the documentation of GitHub Actions
+
+    - name: Check Python version # checking the python version to see if 3.x is installed.
+      run: python --version
+
+    - name: Install requirements # install application requirements
+      run: pip install -r requirements.txt
+
+    - name: Run Test on users_app
+      run: python manage.py test users_app
+
+    - name: Run Test on products_app
+      run: python manage.py test products_app
+
     - name: Generate deployment package
       run: source ./create-zip.sh
 
