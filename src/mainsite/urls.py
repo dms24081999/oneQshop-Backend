@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework_simplejwt import views as jwt_views
 from django.contrib import admin
+from users_app.views import indexPage
 
 admin.site.site_header = "one-Q-shop Admin"
 admin.site.site_title = "one-Q-shop Admin Portal"
@@ -40,6 +41,7 @@ urlpatterns = [
     ),
     path("api/users/", include("users_app.urls")),
     path("api/products/", include("products_app.urls")),
+    path("", indexPage, name="index"),
 ]
 
 if not settings.AWS:

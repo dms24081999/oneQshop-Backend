@@ -32,9 +32,13 @@ from django.conf import settings
 from rest_framework import status, exceptions
 from .signals import *
 from decouple import config
-
+from django.http import HttpResponse
 
 Users = get_user_model()
+
+
+def indexPage(request):
+    return HttpResponse(status=200)
 
 
 class LoginView(APIView):
