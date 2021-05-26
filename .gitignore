@@ -18,7 +18,7 @@ migrations/
 *.sqlite3
 
 # .ENV file
-.env
-src/.env
+# .env
+# src/.env
 oneqshop-v1-ssh.pem
 deploy.zip

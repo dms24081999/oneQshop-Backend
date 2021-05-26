@@ -22,6 +22,6 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: oneQshop-v0
         environment_name: Oneqshopv0-env
-        version_label: oneqshop-v0-source-v1.5
+        version_label: oneqshop-v0-source-v2.0
         region: ap-south-1
         deployment_package: deploy.zip
