@@ -117,8 +117,8 @@ class Products(models.Model):
     images = models.ManyToManyField(
         ProductImages, related_name="product_images", blank=True, db_column="images"
     )
-    price = models.FloatField(null=False, blank=False, default=0.0, db_column="price")
-    count = models.IntegerField(null=False, blank=False, default=0, db_column="count")
+    price = models.FloatField(null=False, blank=False, default=5.0, db_column="price")
+    count = models.IntegerField(null=False, blank=False, default=15, db_column="count")
     is_deleted = models.BooleanField(default=False, db_column="is_deleted")
 
     class Meta:

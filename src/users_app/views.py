@@ -234,10 +234,10 @@ class ResetPasswordRequestToken(
                 }
             )
 
+        token = None  # define the token as none for now
         # last but not least: iterate over all users that are active and can change their password and create a Reset Password Token and send a signal with the created token
         for user in users:
             if user.eligible_for_reset():
-                token = None  # define the token as none for now
                 if (
                     user.password_reset_tokens.all().count() > 0
                 ):  # check if the user already has a token
@@ -254,7 +254,10 @@ class ResetPasswordRequestToken(
                 reset_password_token_created.send(
                     sender=self.__class__, instance=self, reset_password_token=token
                 )
-        return Response({"status": "OK"})
+        if settings.RUNNING_DEVSERVER:
+            return Response({"status": "OK"})
+        else:
+            return Response({"status": "OK", "token": token.key})
 
 
 class UsersCreateInfoAPIView(CreateAPIView):

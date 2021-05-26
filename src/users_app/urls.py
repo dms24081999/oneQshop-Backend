@@ -6,7 +6,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 
 # For listing all users and creating new user, to view a single user append '/1' that is '/id' in the URL  path 'list/fullinfo'
-router.register(r"", UsersFullInfoAPIView)
+router.register(r"", UsersFullInfoAPIView, basename="user_info")
 
 urlpatterns = [
     path("login/", LoginView.as_view(), name="knox_login"),
@@ -27,9 +27,13 @@ urlpatterns = [
         ResetPasswordRequestToken.as_view(),
         name="reset-password-request",
     ),
-    path("create/", UsersCreateInfoAPIView.as_view()),
-    path("is-authenticated/", UsersIsAuthenticatedAPIView.as_view()),
-    path("change-password/", ChangePasswordAPIView.as_view()),
+    path("create/", UsersCreateInfoAPIView.as_view(), name="create-user"),
+    path(
+        "is-authenticated/",
+        UsersIsAuthenticatedAPIView.as_view(),
+        name="is-authenticated",
+    ),
+    path("change-password/", ChangePasswordAPIView.as_view(), name="change-password"),
     path("", include(router.urls)),
     # path("user/currentuser/", CurrentUserAPIView.as_view()),
 ]

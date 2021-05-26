@@ -10,11 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import os
+import os, sys
 from decouple import config, Csv
 from datetime import timedelta
 import pandas as pd
 import pickle
+
+RUNNING_DEVSERVER = len(sys.argv) > 1 and sys.argv[1] == "runserver"
+if RUNNING_DEVSERVER:
+    print("Production Mode!!!")
+else:
+    print("Testing Mode!!!")
+    # sys.stdout = open(os.devnull, 'w')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
