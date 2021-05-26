@@ -24,10 +24,10 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Run Test on users_app
-      run: python manage.py test users_app
+      run: python src/manage.py test users_app
 
     - name: Run Test on products_app
-      run: python manage.py test products_app
+      run: python src/manage.py test products_app
 
     - name: Generate deployment package
       run: source ./create-zip.sh
