@@ -23,6 +23,7 @@ RUN apt-get install -y --no-install-recommends \
     default-libmysqlclient-dev \
     && apt-get clean && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
+
 RUN which python3.6
 RUN update-alternatives --install /usr/bin/python python /usr/local/bin/python3.6 1
 RUN python -V && pip -V

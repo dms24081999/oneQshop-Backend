@@ -21,3 +21,4 @@ migrations/
 .env
 src/.env
 oneqshop-v1-ssh.pem
+deploy.zip
