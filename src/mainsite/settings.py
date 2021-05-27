@@ -111,21 +111,6 @@ DATABASES = {
     }
 }
 
-"""
-In order to achieve that, do the following steps in order :
-1. python manage.py dumpdata > db.json
-2. sudo apt-get update
-    sudo apt-get install python3-dev default-libmysqlclient-dev build-essential
-    pip install mysqlclient
-3. Change the database settings to new database such as of MySQL / PostgreSQL.
-4. python manage.py migrate
-5. python manage.py shell
-    Enter the following in the shell
-    from django.contrib.contenttypes.models import ContentType
-    ContentType.objects.all().delete()
-6. python manage.py loaddata db.json
-"""
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 

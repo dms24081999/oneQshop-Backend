@@ -1,4 +1,5 @@
-# BE Project Backend
+# BE Project Backend (oneQshop)
+Demo: https://youtu.be/-Psl9HTsxXU
 
 ## Setup auto-formatting with Git Hooks:
 ```
@@ -75,6 +76,30 @@ python manage.py populate_db \
     --product_images_file "/mnt/d/Projects/BE Project/main-backend/src/management/csv/productImagesDf.csv" \
     --products_file "/mnt/d/Projects/BE Project/main-backend/src/management/csv/productsDf.csv" \
     --images_path "/mnt/d/Projects/BE Project/data/final-dataset"
+```
+
+## Migrating to another Server:
+### export DB to json
+```
+python manage.py dumpdata > db.json
+sudo apt-get update
+sudo apt-get install python3-dev default-libmysqlclient-dev build-essential
+pip install mysqlclient
+```
+### Change the database settings to new database such as of MySQL / PostgreSQL.
+```
+python manage.py migrate
+python manage.py shell
+```
+### Enter the following in the shell:
+```
+from django.contrib.contenttypes.models import ContentType
+ContentType.objects.all().delete()
+exit()
+```
+### Update new DB from json
+```
+python manage.py loaddata db.json
 ```
 
 ## Manage or move static files to server:
